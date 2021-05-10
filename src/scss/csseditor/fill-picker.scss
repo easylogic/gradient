@@ -1,6 +1,6 @@
 .fill-picker {
   position: fixed;
-  width: 224px;
+  width: 260px;
   display: none;
   background-color: rgba(white, 0.5);
   padding-top: 5px;
@@ -205,9 +205,27 @@
 
       &[data-content-type="color"] {
         .codemirror-colorpicker {
-          width: 222px;
+          width: 256px;
           border: 0px;
           box-shadow: none;
+
+          .information-item{
+            &.rgb {
+              width: 180px !important;
+            }
+
+            > .input-field {
+              padding: 3px 1px;
+            }
+          }
+
+          .color-list {
+            padding-right: 10px !important;
+
+            .color-item {
+              margin-right: 8px !important;
+            }
+          }
         }
       }
 

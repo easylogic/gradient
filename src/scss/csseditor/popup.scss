@@ -19,7 +19,7 @@
   .popup-content {
     .popup-item {
       display: grid;
-      grid-template-columns: 45px 1fr;
+      grid-template-columns: 60px 1fr;
       height: 24px;
 
       label {
@@ -27,7 +27,7 @@
         vertical-align: middle;
         text-align: right;
         line-height: 1.6;
-        padding-right: 2px;
+        padding-right: 5px;
         box-sizing: border-box;
       }
 
@@ -36,12 +36,12 @@
       }
 
       input[type="range"] {
-        width: 80px;
+        width: 90px;
         flex: none;
       }
 
       input[type="number"] {
-        width: 40px;
+        width: 50px;
         flex: none;
         border: 1px solid $border-color;
       }
@@ -55,7 +55,7 @@
   }
 
   &.background-property-popup {
-    width: 225px;
+    width: 260px;
 
     .size-list {
       button {

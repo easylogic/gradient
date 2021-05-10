@@ -64,7 +64,7 @@ export default class FilterProperty extends BaseProperty {
 
   getTools() {
     return html`
-      <select ref="$filterSelect">
+      <select ref="$filterSelect" style="width:100px;">
         ${filterList.map(filter => {
           return `<option value='${filter}'>${filter}</option>`;
         })}

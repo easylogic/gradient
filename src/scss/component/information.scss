@@ -12,16 +12,16 @@
       box-sizing: border-box;
       user-select: text;
 
-      &[type=number] {
-        appearance: none;
-      }
+      // &[type=number] {
+      //   appearance: none;
+      // }
 
-      &[type=number]::-webkit-inner-spin-button,
-      &[type=number]::-webkit-outer-spin-button
-      {
-        appearance: none;
-        margin: 0;
-      }
+      // &[type=number]::-webkit-inner-spin-button,
+      // &[type=number]::-webkit-outer-spin-button
+      // {
+      //   appearance: none;
+      //   margin: 0;
+      // }
     }
 
     &.hex > .information-item.hex {
@@ -70,16 +70,16 @@
           border: 1px solid #cbcbcb;
           border-radius:2px;
 
-          &[type=number] {
-            appearance: none;
-          }
+          // &[type=number] {
+          //   appearance: none;
+          // }
 
-          &[type=number]::-webkit-inner-spin-button,
-          &[type=number]::-webkit-outer-spin-button
-          {
-            appearance: none;
-            margin: 0;
-          }
+          // &[type=number]::-webkit-inner-spin-button,
+          // &[type=number]::-webkit-outer-spin-button
+          // {
+          //   appearance: none;
+          //   margin: 0;
+          // }
         }
 
         &.hsl-l,

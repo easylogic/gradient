@@ -27,6 +27,7 @@
       display: grid;
       grid-template-columns: 64px repeat(2, 1fr);
       grid-column-gap: 0px;
+      font-size: 11px;
 
       > div {
         overflow: hidden;
