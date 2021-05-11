@@ -98,7 +98,7 @@ module.exports = {
     }),
 
     new CopyPlugin([
-      { from: "public", to: "docs" },
+      { from: "public", to: "." },
     ]),
   ]
 };
