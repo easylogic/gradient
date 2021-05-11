@@ -1,5 +1,6 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   output: {
@@ -94,6 +95,10 @@ module.exports = {
 
     new MiniCssExtractPlugin({
       filename: "bundle.css"
-    })
+    }),
+
+    new CopyPlugin([
+      { from: "public", to: "docs" },
+    ]),
   ]
 };
