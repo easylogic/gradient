@@ -92,7 +92,7 @@ export default class FillProperty extends BaseProperty {
       .map(step => {
         return `<div class='step' data-colorstep-id="${
           step.id
-        }" style='background-color:${step.color};'></div>`;
+        }" style='background-color:${step.color};' title="${step.color}"></div>`;
       })
       .join(EMPTY_STRING);
   }

@@ -63,11 +63,12 @@ export default class CanvasView extends UIElement {
         image.onload = () => {
           
           let canvas = document.createElement('canvas');
-          
+
+          let context = canvas.getContext('2d');
+
           canvas.widht = width;
           canvas.height = height;
 
-          let context = canvas.getContext('2d');
           // draw image in canvas starting left-0 , top - 0  
           context.drawImage(image, 0, 0, width, height );
           let png = canvas.toDataURL(); // default png

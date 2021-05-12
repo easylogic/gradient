@@ -98,12 +98,13 @@
       .step {
         border: 1px solid #333;
         display: inline-block;
-        margin-left: -5px;
+        margin-left: -1px;
         width: 16px;
         height: 16px;
         box-sizing: border-box;
-        border-radius: 100%;
         cursor: pointer;
+        position: relative;
+        overflow:visible;
 
         &:first-child {
           margin-left: 0px;
