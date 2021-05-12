@@ -19,6 +19,7 @@ export default class ToolMenu extends UIElement {
                     <ExportCodePen />
                     <ExportJSFiddle />
                     <Github />
+                    <Download />
                 </div>                
             </div>
         `;
