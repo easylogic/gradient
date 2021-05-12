@@ -407,8 +407,9 @@ export default class VerticalColorStep extends UIElement {
   }
 
   removeStep(e) {
-    var id = e.$delegateTarget.attr("id");
+    var id = e.$delegateTarget.closest('drag-bar').attr("id");
     this.colorsteps = this.colorsteps.filter(step => step.id != id);
+
     this.refresh();
     this.updateColorStep();
   }
@@ -479,12 +480,13 @@ export default class VerticalColorStep extends UIElement {
     });
   }
 
-  [CLICK("$steps .step") + SHIFT](e) {
-    this.removeStep(e);
-  }
-
   [CLICK("$steps .step")](e) {
-    this.selectStep(e);
+    if (e.shiftKey) {
+      this.removeStep(e);
+    } else {
+      this.selectStep(e);
+    }
+
   }
 
   [CLICK("$cutOff")](e) {
