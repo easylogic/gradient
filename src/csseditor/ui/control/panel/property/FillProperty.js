@@ -60,7 +60,7 @@ const types = {
 
 export default class FillProperty extends BaseProperty {
   getTitle() {
-    return "Background Images";
+    return "Gradients";
   }
   getBody() {
     return `<div class='property-item fill-list' ref='$fillList'></div>`;

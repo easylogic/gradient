@@ -24,7 +24,7 @@ export class ArtBoard extends GroupItem {
     return super.getDefaultObject({
       itemType: "artboard",
       width: Length.px(300),
-      height: Length.px(400),
+      height: Length.px(300),
       backgroundColor: "white",
       name: "New ArtBoard",
       x: Length.px(100),
