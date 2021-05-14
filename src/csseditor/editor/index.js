@@ -26,7 +26,7 @@ export default class CSSEditor extends UIElement {
                     <div class="layout-left">
                         <Inspector />
                         <div class="ad">
-                          애드센스 
+                          <script data-ad-client="ca-pub-9166386451361987" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                         </div>                        
                     </div>
                     <div class="layout-right" title="Please add a gradient.">
