@@ -5,7 +5,9 @@ $guide-border-hover-color: rgba(0, 0, 0, 0.2);
   position: absolute;
   width: 100px;
   height: 100px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: #ffffff;
+  box-sizing: border-box;
+  border: 1px solid #d4d4d4;
 
   &.radial-position {
     right: auto;

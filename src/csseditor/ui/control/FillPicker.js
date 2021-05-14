@@ -52,7 +52,7 @@ export default class FillPicker extends UIElement {
         <div class="picker-tab">
           <div class="picker-tab-list" ref="$tab" data-value="static-gradient">
             ${tabs.map(it => {
-              return `
+              return /*html*/`
                 <span 
                     class='picker-tab-item ${
                       it.selected ? "selected" : EMPTY_STRING
@@ -119,6 +119,7 @@ export default class FillPicker extends UIElement {
 
   selectTabContent(type, data = {}) {
     this.selectedTab = type;
+    this.$el.attr("data-gradient-type", type);    
     this.refs.$tab.attr("data-value", type);
     this.refs.$tabContainer.attr(
       "data-value",
@@ -156,12 +157,7 @@ export default class FillPicker extends UIElement {
   }
 
   [EVENT("showFillPicker")](data) {
-    this.$el
-      .css({
-        top: Length.px(330),
-        right: Length.px(10)
-      })
-      .show();
+    this.$el.show();
 
     this.selectTabContent(data.type, data);
     this.emit("hidePicker");

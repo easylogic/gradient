@@ -27,7 +27,7 @@ export default class ColorPicker extends UIElement {
 
   template() {
     return html`
-      <div class="fill-picker">
+      <div class="fill-picker" data-gradient-type="static-gradient">
         <div class="picker-tab-container" ref="$tabContainer">
           <div
             class="picker-tab-content selected"
@@ -44,12 +44,7 @@ export default class ColorPicker extends UIElement {
   }
 
   [EVENT("showColorPicker")](config, data) {
-    this.$el
-      .css({
-        top: Length.px(120),
-        right: Length.px(10)
-      })
-      .show();
+    this.$el.show();
 
     this.changeEvent = config.changeEvent;
     this.changeData = data;

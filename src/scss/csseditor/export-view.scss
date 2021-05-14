@@ -2,12 +2,10 @@ $title-height: 30px;
 
 .export-view {
   position: absolute;
-  left: 50%;
-  bottom: 10px;
-  width: 70%;
-  height: 200px;
-  z-index: 100000;
-  transform: translateX(-50%);
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
 
   .codeview {
     position: relative;
@@ -25,7 +23,6 @@ $title-height: 30px;
       background-color: #ff9d12;
       color: white;
       border-bottom-left-radius: 5px;
-      border-top-right-radius: 5px;
     }
 
     textarea {
@@ -34,9 +31,8 @@ $title-height: 30px;
       display: block;
       padding: 10px;
       margin: 0px;
-      border-radius: 5px;
       background-color: rgba(240, 240, 240, 0.938);
-      border: 1px solid rgb(185, 185, 185);
+      border: 0px;
     }
   }
 }

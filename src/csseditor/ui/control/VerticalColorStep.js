@@ -56,7 +56,7 @@ export default class VerticalColorStep extends UIElement {
   }
 
   template() {
-    return `
+    return /*html*/`
             <div class='vertical-colorstep-container'>
                 <div class='vertical-colorstep' ref="$verticalColorstep">
                     <div class='gradient-steps'>
@@ -247,7 +247,7 @@ export default class VerticalColorStep extends UIElement {
   }
 
   [EVENT("hideGradientEditor", CHANGE_EDITOR, CHANGE_SELECTION)]() {
-    this.$el.hide();
+    // this.$el.hide();
   }
 
   getStepPosition(step) {
@@ -297,7 +297,7 @@ export default class VerticalColorStep extends UIElement {
       var cut = step.cut ? "cut" : EMPTY_STRING;
       var unitValue = step.getUnitValue(this.getMaxValue());
 
-      return `
+      return /*html*/`
             <div 
                 class='drag-bar ${step.selected ? "selected" : EMPTY_STRING}' 
                 id="${step.id}"

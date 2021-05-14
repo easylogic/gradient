@@ -6,10 +6,11 @@
 
   .logo {
     color: white;
-    padding: 20px 10px;
+    padding: 2px 0px;
+    line-height: 1.4;
 
     .text {
-      font-size: 30px;
+      font-size: 28px;
       display: inline-block;
       font-weight: bold;
       text-transform: uppercase;
@@ -31,6 +32,7 @@
     .site {
       font-size: 14px;
       color: $border-color;
+      display: none;
     }
   }
 
@@ -39,6 +41,7 @@
     text-align: center;
     height: 100%;
     padding: 0px 5px;
+    padding-top: 6px;    
 
     &.flex-2 {
       flex: 5;
@@ -72,6 +75,10 @@
       margin-right: 5px;
       background-color: transparent;
 
+      > * {
+        display: inline-block;
+      }
+
       &[checked="checked"] {
         .icon {
           background-color: rgba(255, 255, 255, 0.1);
@@ -81,9 +88,10 @@
 
     .icon {
       margin: 0 auto;
-      width: 30px;
-      height: 30px;
+      width: 20px;
+      height: 20px;
       // background-color: rgba(206, 206, 206, 0.5);
+      box-sizing: border-box;
 
       svg {
         width: 100%;
@@ -186,10 +194,10 @@
         border-radius: 3px;
         &:before {
           display: inline-block;
-          font-size: 30px;
+          font-size: 20px;
           font-weight: bold;
           vertical-align: middle;
-          line-height: 30px;
+          line-height: 0.6;
         }
       }
 

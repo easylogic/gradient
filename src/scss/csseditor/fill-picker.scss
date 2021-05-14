@@ -1,12 +1,19 @@
 .fill-picker {
-  position: fixed;
+  position: relative;
   width: 260px;
   display: none;
   background-color: rgb(255, 255, 255);
   padding-top: 5px;
   z-index: 100;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
   border: 1px solid $border-color;
+  border-left: 0px;
+  border-right: 0px;
+  margin-top: 10px;
+
+  &[data-gradient-type="static-gradient"] {
+    margin-top: 0px;
+  }
 
   .picker-tab {
     .picker-tab-list {

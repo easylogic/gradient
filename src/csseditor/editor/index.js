@@ -15,27 +15,35 @@ import popup from "../ui/control/popup";
 
 export default class CSSEditor extends UIElement {
   template() {
-    return `
+    return /*html*/`
             <div class="layout-main -show-timeline" ref="$layoutMain">
                 <div class="layout-header">
-                    <div class="page-tab-menu"><ToolMenu /></div>
+                    <div class="page-tab-menu">
+                    <ToolMenu />
+                  </div>
                 </div>
                 <div class="layout-middle">
-                          
-                    <div class="layout-right">
+                    <div class="layout-left">
                         <Inspector />
+                        <div class="ad">
+                          애드센스 
+                        </div>                        
                     </div>
+                    <div class="layout-right" title="Please add a gradient.">
+                      <VerticalColorStep />
+                      <FillPicker />
+                      <ColorPicker  />
+                      <BackgroundPropertyPopup />
+                      <BoxShadowPropertyPopup />      
+                    </div>                    
                     <div class="layout-body">
                         <!-- LayerToolbar /-->
                         <CanvasView />
-                        <VerticalColorStep />
-                    </div>                              
+                    </div>
                 </div>
-                <FillPicker />
-                <ColorPicker  />
-                <BackgroundPropertyPopup />
-                <BoxShadowPropertyPopup />
-                <ExportWindow />
+                <div class="layout-footer">
+                  <ExportWindow />                
+                </div>
 
             </div>
   

@@ -229,9 +229,9 @@ export default class BackgroundPropertyPopup extends UIElement {
 
     this.$el
       .css({
-        top: Length.px(110),
-        right: Length.px(10),
-        bottom: Length.auto
+        position: 'relative',
+        right: 'auto',
+        bottom: 'auto',
       })
       .show("inline-block");
     this.emit("hidePropertyPopup");

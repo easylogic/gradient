@@ -1,21 +1,15 @@
 .vertical-colorstep-container {
-  position: absolute;
-  top: -80px;
-  left: 0px;
-  right: 0px;
-  height: 70px;
   display: none;
   z-index: 1000;
   pointer-events: none;
+  overflow: auto;
 
   .gradient-editor {
-    position: absolute;
-    display: inline-block;
-    left: 50%;
-    transform: translateX(200px);
-    min-width: 100px;
-    top: -20px;
+    position: relative;
+    display: block;
     pointer-events: all;
+    margin-top: 100px;
+    text-align: center;
 
     .angle-editor,
     .position-editor {
@@ -34,8 +28,9 @@
     display: inline-block;
     left: 50%;
     transform: translateX(-50%);
-    top: 0px;
+    top: 10px;
     pointer-events: all;
+    white-space: nowrap;
 
     .guide-button {
       width: 14px;
@@ -113,14 +108,12 @@
 
 .vertical-colorstep {
   position: absolute;
-  left: 50%;
-  top: 20px;
-  width: 400px;
-  transform: translateX(-50%);
+  top: 32px;
+  width: 100%;
   display: inline-block;
   z-index: 100;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
   pointer-events: all;
 
   .gradient-steps {
@@ -129,12 +122,11 @@
 
     .hue-container {
       width: 100%;
-      height: 14px;
+      height: 40px;
       margin-top: 0px;
       left: 0px;
       right: 0px;
       position: absolute;
-      border-radius: 14px;
       z-index: 0;
       cursor: copy;
       box-sizing: border-box;
@@ -145,7 +137,6 @@
       position: relative;
       padding: 0px;
       margin: 0px;
-      border-radius: 14px;
       cursor: pointer;
       pointer-events: none;
       box-sizing: border-box;
@@ -155,9 +146,10 @@
         position: relative;
         width: 100%;
         cursor: copy;
-        height: 14px;
+        height: 40px;
         z-index: 1;
-        border-radius: 14px;
+        box-sizing: border-box;
+        border: 1px solid black;
 
         &.mode-drag {
           cursor: pointer;
@@ -169,7 +161,7 @@
         border-radius: 50%;
         display: inline-block;
         left: 0px;
-        top: 14px;
+        top: 30px;
         transform: translateX(-50%);
         position: absolute;
         cursor: pointer;
@@ -179,11 +171,12 @@
         .guide-line {
           pointer-events: none;
           position: absolute;
-          width: 1px;
+          width: 2px;
           height: 0px;
           bottom: 8px;
           left: 4px;
           transition: all 0.3s ease-out;
+          display: none;
         }
 
         .guide-change {
@@ -217,10 +210,10 @@
 
         .guide-step {
           background-color: transparent;
-          border: 2px solid white;
-          box-shadow: 0 0 2px 0px rgba(255, 255, 255, 0.6);
-          width: 10px;
-          height: 10px;
+          // border: 2px solid white;
+          // box-shadow: 0 0 2px 0px rgba(255, 255, 255, 0.6);
+          width: 14px;
+          height: 14px;
           transform: none;
           border-radius: 50%;
           display: inline-block;
@@ -229,7 +222,7 @@
           cursor: pointer;
           transition: top 0.3s ease-out;
           pointer-events: all;
-          border: 1px solid $border-color;
+          border: 1px solid black !important;
           box-sizing: border-box;
         }
 
@@ -280,12 +273,7 @@
 
         &.selected {
           z-index: 1;
-          top: 30px;
-
-          .guide-step {
-            box-shadow: 0 0 20px 8px rgba(228, 255, 0, 0.8);
-          }
-
+          top: 42px;
           .guide-line {
             height: 32px;
           }
