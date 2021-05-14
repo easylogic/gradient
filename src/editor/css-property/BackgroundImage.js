@@ -42,8 +42,6 @@ export class BackgroundImage extends Property {
       type: data.type,
       image: this.createGradient(data, this.json.image)
     });
-
-    // console.log(this.toCSS());
   }
 
   createGradient(data, gradient) {
@@ -56,42 +54,44 @@ export class BackgroundImage extends Property {
     const radialType = data.radialType;
     const radialPosition = data.radialPosition;
 
-    let json = gradient.toJSON();
-    delete json.itemType;
-    delete json.type;
+    // delete json.itemType;
+    // delete json.type;
 
     switch (data.type) {
       case "static-gradient":
-        return new StaticGradient({ ...json, colorsteps });
-        break;
+        return new StaticGradient({ 
+          colorsteps 
+        });
       case "linear-gradient":
-        return new LinearGradient({ ...json, colorsteps, angle });
+        return new LinearGradient({ 
+          colorsteps, 
+          angle 
+        });
       case "repeating-linear-gradient":
-        return new RepeatingLinearGradient({ ...json, colorsteps, angle });
+        return new RepeatingLinearGradient({ 
+          colorsteps, 
+          angle 
+      });
       case "radial-gradient":
         return new RadialGradient({
-          ...json,
           colorsteps,
           radialType,
           radialPosition
         });
       case "repeating-radial-gradient":
         return new RepeatingRadialGradient({
-          ...json,
           colorsteps,
           radialType,
           radialPosition
         });
       case "conic-gradient":
         return new ConicGradient({
-          ...json,
           colorsteps,
           angle,
           radialPosition
         });
       case "repeating-conic-gradient":
         return new RepeatingConicGradient({
-          ...json,
           colorsteps,
           angle,
           radialPosition

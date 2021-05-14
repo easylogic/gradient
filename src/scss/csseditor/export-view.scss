@@ -5,8 +5,7 @@ $title-height: 30px;
   left: 50%;
   bottom: 10px;
   width: 70%;
-  height: 140px;
-  //   background-color: rgba(255, 255, 255, 0.3);
+  height: 200px;
   z-index: 100000;
   transform: translateX(-50%);
 
@@ -15,13 +14,29 @@ $title-height: 30px;
     width: 100%;
     height: 100%;
 
+    &:after {
+      content: "CSS";
+      position: absolute;
+      display:inline-block;
+      right:0px;
+      top:0px;
+      padding:5px 10px;
+      box-sizing: border-box;
+      background-color: #ff9d12;
+      color: white;
+      border-bottom-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+
     textarea {
       width: 100%;
       height: 100%;
       display: block;
       padding: 10px;
       margin: 0px;
-      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      background-color: rgba(240, 240, 240, 0.938);
+      border: 1px solid rgb(185, 185, 185);
     }
   }
 }

@@ -118,9 +118,6 @@ export class Item {
    * @param {*} json
    */
   convert(json) {
-    if (isUndefined(json.id)) {
-      json.id = uuidShort();
-    }
     return json;
   }
 

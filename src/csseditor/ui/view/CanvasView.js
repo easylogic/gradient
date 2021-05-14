@@ -31,8 +31,8 @@ export default class CanvasView extends UIElement {
     this.emit(targetEvent, data);
   }
 
-  [EVENT("refreshCanvas")]() {
-    var current = editor.selection.current;
+  [EVENT("refreshCanvas")](currentItem) {
+    var current = currentItem || editor.selection.current;
     if (current) {
       this.refs.$canvas.cssText(current.toString());
     }

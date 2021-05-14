@@ -30,8 +30,8 @@ export default class SizeProperty extends BaseProperty {
           <label>Width</label>
         </div>
         <div class="tool">
-          <button type="button" data-value="fixed" ref="$fixSize">
-            ${icon.arrowRight}
+          <button type="button" data-value="fixed" ref="$fixSize" title="Same Size">
+            =
           </button>
         </div>
         <div class="height">
@@ -60,7 +60,7 @@ export default class SizeProperty extends BaseProperty {
 
     this.setSize({
       width,
-      height: width
+      height: width.clone()
     });
   }
 
