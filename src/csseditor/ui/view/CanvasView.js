@@ -50,7 +50,9 @@ export default class CanvasView extends UIElement {
 
       const svg = `<?xml version="1.0" ?><svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
           <foreignObject width="100%" height="100%" x="0" y="0">
-            <div xmlns="http://www.w3.org/1999/xhtml" style="${current.toString()}"></div>
+            <div xmlns="http://www.w3.org/1999/xhtml" style="position:relative">
+              <div style="${current.toString()}"></div>
+            </div>
           </foreignObject>
         </svg>`
       const blob = new Blob([svg],{type:'image/svg+xml'});
