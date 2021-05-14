@@ -141,7 +141,8 @@ $display-grid-color: red;
       left: $left-size + $right-size;
       top: 0px;
       right: 0px;
-      bottom: 0px;
+      bottom: $footer-size;
+      pointer-events: none;
     }
   }
 }
