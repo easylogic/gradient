@@ -156,9 +156,9 @@ export default class FillPicker extends UIElement {
     this.emit("changeColorPicker", color);
   }
 
-  [EVENT("showFillPicker")](data) {
+  [EVENT("showFillPicker")](data, params) {
     this.$el.show();
-
+    this.state.params = params;
     this.selectTabContent(data.type, data);
     this.emit("hidePicker");
   }
@@ -175,6 +175,6 @@ export default class FillPicker extends UIElement {
     this.emit("changeFillPicker", {
       type: this.selectedTab,
       ...data
-    });
+    }, this.state.params);
   }
 }

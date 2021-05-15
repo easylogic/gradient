@@ -24,12 +24,9 @@ export default class CSSEditor extends UIElement {
                 </div>
                 <div class="layout-middle">
                     <div class="layout-left">
-                        <Inspector />
-                        <div class="ad">
-                          <script data-ad-client="ca-pub-9166386451361987" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        </div>                        
+                        <Inspector />   
                     </div>
-                    <div class="layout-right" title="Please add a gradient.">
+                    <div class="layout-right">
                       <VerticalColorStep />
                       <FillPicker />
                       <ColorPicker  />
@@ -42,7 +39,10 @@ export default class CSSEditor extends UIElement {
                     </div>
                 </div>
                 <div class="layout-footer">
-                  <ExportWindow />                
+                  <ExportWindow />   
+                  <div class="ad">
+                    <script data-ad-client="ca-pub-9166386451361987" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                  </div>                                                    
                 </div>
 
             </div>

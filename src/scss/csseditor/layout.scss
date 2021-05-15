@@ -67,6 +67,16 @@ $display-grid-color: red;
     overflow: hidden;
     border-top: 1px solid $border-color;
     background-color: yellow;
+
+
+    .ad {
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+      right: 0px;
+      height: 100px;
+      color: white;
+    }    
   }
 
   .layout-middle {
@@ -91,17 +101,11 @@ $display-grid-color: red;
         left: 0px;
         right: 0px;
         top: 0px;
-        bottom: $footer-size;  
+        bottom: 0px;  
         overflow: auto;
-      }
 
-      .ad {
-        position: absolute;
-        left: 0px;
-        bottom: 0px;
-        right: 0px;
-        height: $footer-size;
-        color: white;
+        box-sizing: border-box;
+        border-bottom: 1px solid #ececec;
       }
     }
 
@@ -167,6 +171,8 @@ $display-grid-color: red;
 @import "./property-view.scss";
 @import "./filters.scss";
 @import "./border.scss";
+@import "./border-image.scss";
+@import "./outline.scss";
 @import "./size.scss";
 @import "./box-shadow.scss";
 @import "./export-view.scss";

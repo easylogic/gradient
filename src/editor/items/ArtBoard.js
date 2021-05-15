@@ -32,6 +32,8 @@ export class ArtBoard extends GroupItem {
       filters: [],
       border: {},
       borderRadius: {},
+      outline: { width: Length.px(0), color: "solid", style: 'none' },
+      borderImage: { width: 1, outset: 0, slice: Length.percent(100), repeat: 'stretch', source: '' },
       backdropFilters: [],
       backgroundImages: [],
       boxShadows: [],
@@ -216,6 +218,14 @@ export class ArtBoard extends GroupItem {
     }
   }
 
+  setOutline(data) {
+    this.json.outline = data;
+  }
+
+  setBorderImage (data) {
+    this.json.borderImage = {...this.json.borderImage, ...data}
+  }
+
   setBorderRadius(type, data) {
     this.json.borderRadius = data;
   }
@@ -313,6 +323,30 @@ export class ArtBoard extends GroupItem {
     return results;
   }
 
+  toOutlineCSS() {
+    var results = {};
+    var outline = this.json.outline;
+
+    results.outline = `${outline.color} ${outline.style} ${outline.width}`
+
+    return results;
+  }
+
+  toBorderImageCSS() {
+    var results = {};
+    var borderImage = this.json.borderImage;
+
+    results['border-image-source'] = new BackgroundImage().setGradient(borderImage.source).image.toString() ;
+    results['border-image-slice'] = borderImage.slice;
+    results['border-image-width'] = borderImage.width;
+    results['border-image-outset'] = borderImage.outset;
+    results['border-image-repeat'] = borderImage.repeat;
+
+
+    return results;
+  }
+
+
   toFilterCSS() {
     return {
       filter: this.json.filters.join(WHITE_STRING)
@@ -345,6 +379,8 @@ export class ArtBoard extends GroupItem {
       ...this.toSizeCSS(),
       ...this.toBorderCSS(),
       ...this.toBorderRadiusCSS(),
+      ...this.toBorderImageCSS(),
+      ...this.toOutlineCSS(),
       ...this.toFilterCSS(),
       ...this.toBackgroundImageCSS(isExport),
       ...this.toBoxShadowCSS()

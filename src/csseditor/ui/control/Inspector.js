@@ -7,11 +7,14 @@ export default class Inspector extends UIElement {
     return html`
       <div class="feature-control">
         <SizeProperty />
-        <!--BorderProperty / -->
-        <BorderRadiusProperty />
-        <BackgroundColorProperty />
+        <BackgroundColorProperty />        
+        <FillProperty />        
+        <BorderRadiusProperty />        
+        <BorderProperty />
+        <BorderImageProperty />        
+        <OutlineProperty />
         <FilterProperty />        
-        <FillProperty />
+
       </div>
     `;
   }

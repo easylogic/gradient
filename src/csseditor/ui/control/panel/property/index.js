@@ -27,10 +27,17 @@ import BorderProperty from "./BorderProperty";
 import BorderRadiusProperty from "./BorderRadiusProperty";
 import SizeProperty from "./SizeProperty";
 import BoxShadowProperty from "./BoxShadowProperty";
+import OutlineProperty from "./OutlineProperty";
+import BorderImageProperty from "./BorderImageProperty";
 // import PositionProperty from "./PositionProperty";
+
+
 
 export default {
   // PositionProperty,
+
+  BorderImageProperty,
+  OutlineProperty,
   BoxShadowProperty,
   SizeProperty,
   BorderRadiusProperty,

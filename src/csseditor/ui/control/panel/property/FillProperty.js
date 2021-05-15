@@ -291,6 +291,8 @@ export default class FillProperty extends BaseProperty {
       ...this.getFillData(this.currentBackgroundImage),
       selectColorStepId,
       refresh: true
+    }, {
+      id: this.source
     });
     this.viewBackgroundPropertyPopup();
   }
@@ -406,15 +408,18 @@ export default class FillProperty extends BaseProperty {
     }
   }
 
-  [EVENT("changeFillPicker")](data) {
-    switch (data.type) {
-      case "image":
-        this.setImage(data);
-        break;
-      default:
-        this.setGradient(data);
-        break;
+  [EVENT("changeFillPicker")](data, params) {
+    if (params.id === this.source) {
+      switch (data.type) {
+        case "image":
+          this.setImage(data);
+          break;
+        default:
+          this.setGradient(data);
+          break;
+      }
     }
+
   }
 
   getRef(...args) {
