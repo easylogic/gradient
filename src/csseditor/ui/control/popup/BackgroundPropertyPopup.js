@@ -34,7 +34,7 @@ export default class BackgroundPropertyPopup extends UIElement {
   initState() {
     return {
       size: "auto",
-      repeat: "repeat",
+      repeat: "no-repeat",
       x: Length.px(0),
       y: Length.px(0),
       width: Length.px(0),
@@ -210,7 +210,7 @@ export default class BackgroundPropertyPopup extends UIElement {
     this.children.$width.refreshValue(this.data.width);
     this.children.$height.refreshValue(this.data.height);
     this.refs.$size.attr("data-value", this.data.size);
-    this.refs.$repeat.val(this.data.repeat);
+    this.refs.$repeat.attr('data-value', this.data.repeat);
     this.refs.$blend.val(this.data.blendMode);
   }
 

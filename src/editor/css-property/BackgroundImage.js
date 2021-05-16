@@ -109,7 +109,7 @@ export class BackgroundImage extends Property {
       checked: false,
       blendMode: "normal",
       size: "auto",
-      repeat: "repeat",
+      repeat: "no-repeat",
       width: Length.percent(100),
       height: Length.percent(100),
       x: Length.percent(0),
