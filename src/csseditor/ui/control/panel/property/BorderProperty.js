@@ -134,6 +134,7 @@ export default class BorderProperty extends BaseProperty {
       this.refresh();
 
       this.emit("refreshCanvas");
+      this.emit('toggleBorderImage');
     }
   }
 

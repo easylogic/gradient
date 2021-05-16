@@ -20,6 +20,7 @@ export default class BorderImageProperty extends BaseProperty {
 
   afterRender() {
     this.refresh();
+    this.trigger('toggleBorderImage');
   }
 
   getTemplateForBorderImageProperty() {
@@ -180,5 +181,20 @@ export default class BorderImageProperty extends BaseProperty {
       this.refs.$preview.css('background-image', backgroundImage.image.toString())
     }
 
+  }
+
+  [EVENT('toggleBorderImage')] () {
+    const current = editor.selection.current;
+
+    if (!current) this.hide();
+
+    if (current.border.all) {
+      if (current.border.all.width.value > 0 && ['none', 'hidden'].includes(current.border.all.style) === false ) {
+        this.show();
+        return;
+      }
+    }
+
+    this.hide();
   }
 }
