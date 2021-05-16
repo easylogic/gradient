@@ -119,7 +119,7 @@ export default class FillProperty extends BaseProperty {
           <div class='preview' data-index="${index}" ref="preview${index}">
               <div class='mini-view' style="${imageCSS}" ref="miniView${index}"></div>
           </div>
-          <div class='fill-info'>
+          <div class='fill-info' title="Please drag to change order">
             <div class='gradient-info'>
               <div class='fill-title' ref="fillTitle${index}">${backgroundTypeName}</div>
               <div class='colorsteps' ref="colorsteps${index}">

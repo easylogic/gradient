@@ -1,4 +1,4 @@
-import { getXYInCircle, calculateAngle } from "../../../../util/functions/math";
+import { getXYInCircle, calculateAngle, round } from "../../../../util/functions/math";
 import UIElement, { EVENT } from "../../../../util/UIElement";
 import {
   CHANGE_EDITOR,
@@ -89,7 +89,9 @@ export default class LayerAngle extends UIElement {
     this.refs.$dragPointer.px("left", x - minX);
     this.refs.$dragPointer.px("top", y - minY);
 
-    var lastAngle = Math.round(angle + 90) % 360;
+    var lastAngle = round(angle + 90, 1000) % 360;
+
+    console.log(lastAngle);
 
     this.refreshAngleText(lastAngle);
 

@@ -1,4 +1,4 @@
-import { getXYInCircle, calculateAngle } from "../../../../util/functions/math";
+import { getXYInCircle, calculateAngle, round } from "../../../../util/functions/math";
 import UIElement, { EVENT } from "../../../../util/UIElement";
 import {
   POINTERSTART,
@@ -82,7 +82,7 @@ export default class GradientAngle extends UIElement {
     this.refs.$dragPointer.px("left", x - minX);
     this.refs.$dragPointer.px("top", y - minY);
 
-    var lastAngle = Math.round(angle + 90) % 360;
+    var lastAngle = round((angle + 90) % 360, 1000);
 
     this.refreshAngleText(lastAngle);
 
