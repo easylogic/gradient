@@ -66,7 +66,7 @@ $display-grid-color: red;
     height: $footer-size;
     overflow: hidden;
     border-top: 1px solid $border-color;
-    background-color: yellow;
+    // background-color: yellow;
 
 
     .ad {
@@ -118,6 +118,7 @@ $display-grid-color: red;
       top: 0px;
       bottom: 0px;
       border-left: 1px solid $border-color;
+      border-right: 1px solid $border-color;
       z-index: 100;
       box-sizing: border-box;
       background-color: white;

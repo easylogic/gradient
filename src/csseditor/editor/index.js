@@ -41,7 +41,16 @@ export default class CSSEditor extends UIElement {
                 <div class="layout-footer">
                   <ExportWindow />   
                   <div class="ad">
-                    <script data-ad-client="ca-pub-9166386451361987" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <ins class="adsbygoogle"
+                        style="display:block; text-align:center;"
+                        data-ad-layout="in-article"
+                        data-ad-format="fluid"
+                        data-ad-client="ca-pub-9166386451361987"
+                        data-ad-slot="6703713722"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
                   </div>                                                    
                 </div>
 
