@@ -5,6 +5,7 @@ import { html } from "../../../../../util/functions/func";
 import { EVENT } from "../../../../../util/UIElement";
 import { BackgroundImage } from "../../../../../editor/css-property/BackgroundImage";
 import { StaticGradient } from "../../../../../editor/image-resource/StaticGradient";
+import { Length } from "../../../../../editor/unit/Length";
 
 const BorderImageStyleLit = [
   "stretch",
@@ -24,6 +25,10 @@ export default class BorderImageProperty extends BaseProperty {
   }
 
   getTemplateForBorderImageProperty() {
+
+    const current = editor.selection.current || {borderImage: {width: Length.px(0), outset: 0, slice: Length.percent(100)}};
+
+
     return html`
       <div class="property-item border-image-item">
         <div class="input-group">
@@ -43,7 +48,7 @@ export default class BorderImageProperty extends BaseProperty {
             </div>
             <div class="input-ui">
               <div class="input">
-                <input type="number" min="0" max="100" value="0" ref="$width" />
+                <input type="number" min="0" max="100" value="${current.borderImage.width.value}" ref="$width" />
               </div>
               <div class="select">
                 <select class="unit" ref="$unit">
@@ -59,12 +64,12 @@ export default class BorderImageProperty extends BaseProperty {
             </div>
             <div class="input-ui">
               <div class="input">
-                <input type="number" min="0" max="100" value="0" ref="$slice" />
+                <input type="number" min="0" max="100" value="${current.borderImage.slice.value}" ref="$slice" />
               </div>
               <div class="select">
-                <select class="unit" ref="$unit">
-                  <option value="px">px</option>
-                  <option value="%">%</option>
+                <select class="unit" ref="$sliceUnit">
+                  <option value="px" ${current.borderImage.slice.unit === 'px' ? 'selected' : ''}>px</option>
+                  <option value="%" ${['percent', '%'].includes(current.borderImage.slice.unit) ? 'selected' : ''}>%</option>
                 </select>
               </div>
             </div>
@@ -75,7 +80,7 @@ export default class BorderImageProperty extends BaseProperty {
             </div>
             <div class="input-ui">
               <div class="input">
-                <input type="number" min="0" max="100" value="0" ref="$outset" />
+                <input type="number" min="0" max="100" value="${current.borderImage.outset.value}" ref="$outset" />
               </div>
               <div class="select">
                 <select class="unit" ref="$unit">
@@ -126,6 +131,7 @@ export default class BorderImageProperty extends BaseProperty {
       }, {
         id: this.source
       });
+      this.emit('hideBackgroundPropertyPopup');
     }
   }
 
@@ -147,7 +153,7 @@ export default class BorderImageProperty extends BaseProperty {
 
   [INPUT("$slice")](e) {
     this.refreshBorderImageInfo({
-      slice: this.refs.$slice.value
+      slice: new Length(this.refs.$slice.value, this.refs.$sliceUnit.value)
     });
   }    
 
@@ -181,20 +187,5 @@ export default class BorderImageProperty extends BaseProperty {
       this.refs.$preview.css('background-image', backgroundImage.image.toString())
     }
 
-  }
-
-  [EVENT('toggleBorderImage')] () {
-    const current = editor.selection.current;
-
-    if (!current) this.hide();
-
-    if (current.border.all) {
-      if (current.border.all.width.value > 0 && ['none', 'hidden'].includes(current.border.all.style) === false ) {
-        this.show();
-        return;
-      }
-    }
-
-    this.hide();
   }
 }

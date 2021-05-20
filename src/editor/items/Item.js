@@ -13,7 +13,7 @@ export class Item {
     }
     this.json = this.convert({ ...this.getDefaultObject(), ...json });
 
-    return new Proxy(this, {
+    this.ref = new Proxy(this, {
       get: (target, key) => {
         var originMethod = target[key];
         if (isFunction(originMethod)) {
@@ -41,6 +41,8 @@ export class Item {
         return true;
       }
     });
+
+    return this.ref;
   }
 
   /***********************************
@@ -212,7 +214,6 @@ export class Item {
   getDefaultObject(obj = {}) {
     return {
       id: uuidShort(),
-      index: Number.MAX_SAFE_INTEGER,
       visible: true,
       lock: false,
       ...obj

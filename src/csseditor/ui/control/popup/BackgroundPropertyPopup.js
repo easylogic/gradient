@@ -189,8 +189,7 @@ export default class BackgroundPropertyPopup extends UIElement {
 
   template() {
     return `
-      <div class='popup background-property-popup'>
-        <div class='popup-title'>Background Image</div>
+      <div class='popup background-property-popup' style="padding-top: 10px">
         <div class='popup-content'>
           ${this.templateForSize()}        
           ${this.templateForX()}

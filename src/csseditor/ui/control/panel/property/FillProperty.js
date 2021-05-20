@@ -21,6 +21,7 @@ import { EMPTY_STRING } from "../../../../../util/css/types";
 import icon from "../../../icon/icon";
 import Dom from "../../../../../util/Dom";
 import { Position } from "../../../../../editor/unit/Length";
+import { CSS_TO_STRING } from "../../../../../util/css/make";
 
 const names = {
   image: "Image",
@@ -107,7 +108,7 @@ export default class FillProperty extends BaseProperty {
       var backgroundType = types[image.type];
       var backgroundTypeName = names[image.type];
 
-      const imageCSS = `background-image: ${image.toString()}; background-size: cover;`;
+      const imageCSS = CSS_TO_STRING(it.toBackgroundImageCSS());
       const selectedClass = it.selected ? "selected" : "";
 
       if (it.selected) {
@@ -132,7 +133,7 @@ export default class FillProperty extends BaseProperty {
               </div>
             </div>
             <div class='background-image-info'>
-              <div ref="size${index}">${it.width} / ${it.height}</div>
+              <div ref="size${index}">${it.width}/${it.height}</div>
               <div ref="repeat${index}">${it.repeat}</div>
               <div class='blend-mode' ref="blendMode${index}">${
         it.blendMode
@@ -159,14 +160,60 @@ export default class FillProperty extends BaseProperty {
 
     if (current) {
       // ArtBoard, Layer 에 새로운 BackgroundImage 객체를 만들어보자.
-      current.createBackgroundImage();
+      current.createBackgroundImage({ selected: true });
+      this.refresh();
+
+      this.selectedIndex = current.backgroundImages.length-1;
+      this.selectItem(this.selectedIndex, true);
+
       this.emit("refreshCanvas");
+      this.emit(CHANGE_INSPECTOR);      
+
+
+      this.current = editor.selection.current;
+      this.currentBackgroundImage = this.current.getSelectedBackgroundImage();
+  
+      this.emit("showFillPicker", {
+        ...this.getFillData(this.currentBackgroundImage),
+        selectColorStepId: null,
+        refresh: true
+      }, {
+        id: this.source
+      });
+      this.viewBackgroundPropertyPopup();
+  
+      this.emit("selectGradient");
+
     }
 
-    this.refresh();
-
-    this.emit(CHANGE_INSPECTOR);
   }
+
+  [EVENT('selectGradient')] () {
+    var current = editor.selection.current;
+
+    if (current) {
+     
+      this.refresh();
+
+      this.selectedIndex = current.getSelectedBackgroundIndex();
+      this.selectItem(this.selectedIndex, true);
+
+      this.emit(CHANGE_INSPECTOR);      
+
+      this.current = current;
+      this.currentBackgroundImage = this.current.getSelectedBackgroundImage();
+  
+      this.emit("showFillPicker", {
+        ...this.getFillData(this.currentBackgroundImage),
+        selectColorStepId: null,
+        refresh: true
+      }, {
+        id: this.source
+      });
+      this.viewBackgroundPropertyPopup();
+    }
+  }
+
 
   getFillData(backgroundImage) {
     let data = {
@@ -260,16 +307,15 @@ export default class FillProperty extends BaseProperty {
   // 객체를 선택하는 괜찮은 패턴이 어딘가에 있을 텐데......
   // 언제까지 selected 를 설정해야하는가?
   selectItem(selectedIndex, isSelected = true) {
+
+    this.refs.$fillList.$$(".selected").forEach(it => it.removeClass("selected"))
+
     if (isSelected) {
       this.refs[`fillIndex${selectedIndex}`].addClass("selected");
-    } else {
-      this.refs[`fillIndex${selectedIndex}`].removeClass("selected");
     }
 
     if (this.current) {
-      this.current.backgroundImages.forEach((it, index) => {
-        it.selected = index === selectedIndex;
-      });
+      this.current.selectBackgroundImage(selectedIndex);
     }
   }
 
@@ -283,9 +329,7 @@ export default class FillProperty extends BaseProperty {
     this.current = editor.selection.current;
 
     if (!this.current) return;
-    this.currentBackgroundImage = this.current.backgroundImages[
-      this.selectedIndex
-    ];
+    this.currentBackgroundImage = this.current.getSelectedBackgroundImage();
 
     this.emit("showFillPicker", {
       ...this.getFillData(this.currentBackgroundImage),
@@ -295,15 +339,15 @@ export default class FillProperty extends BaseProperty {
       id: this.source
     });
     this.viewBackgroundPropertyPopup();
+
+    this.emit("selectGradient");
   }
 
   viewBackgroundPropertyPopup(position) {
     this.current = editor.selection.current;
 
     if (!this.current) return;
-    this.currentBackgroundImage = this.current.backgroundImages[
-      this.selectedIndex
-    ];
+    this.currentBackgroundImage = this.current.getSelectedBackgroundImage();
 
     const back = this.currentBackgroundImage;
 

@@ -1,14 +1,18 @@
+$hue-size: 20px;
+$colorstep-size: 12px;
+$sub-editor-size: 70px;
+
 .vertical-colorstep-container {
   display: none;
   z-index: 1000;
   pointer-events: none;
   overflow: auto;
+  position: relative;
 
   .gradient-editor {
     position: relative;
     display: block;
     pointer-events: all;
-    margin-top: 100px;
     text-align: center;
 
     .angle-editor,
@@ -17,20 +21,18 @@
       display: inline-block;
       vertical-align: middle;
       box-sizing: border-box;
-      width: 100px;
-      height: 100px;
+      width: $sub-editor-size;
+      height: $sub-editor-size;
       margin-right: 4px;
     }
   }
 
   .gradient-tools {
-    position: absolute;
-    display: inline-block;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 10px;
+    display: block;
     pointer-events: all;
     white-space: nowrap;
+    padding-left: 10px;
+    padding-right: 10px;
 
     .guide-button {
       width: 14px;
@@ -48,6 +50,7 @@
       box-sizing: border-box;
       outline: none;
       vertical-align: middle;
+      display: inline-block;
 
       &.cut {
         background-repeat: repeat-x;
@@ -107,22 +110,110 @@
 }
 
 .vertical-colorstep {
-  position: absolute;
-  top: 32px;
-  width: 100%;
-  display: inline-block;
+  position: relative;
   z-index: 100;
   padding-left: 10px;
   padding-right: 10px;
   pointer-events: all;
+  box-sizing: border-box;
+  margin-top: 10px;
 
   .gradient-steps {
     position: relative;
     display: block;
 
+    .color-list {
+      margin-top: 20px;
+      
+      .color-list-item {
+        display: grid;
+        grid-template-columns: 20px 20px 1fr;
+        grid-column-gap: 2px;
+        margin-bottom: 2px;
+
+        .guide-step {
+          border:1px solid #ececec;
+          box-sizing: border-box;
+          position: relative;
+
+          @include transparent-background(12px);
+
+          .preview {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+          }
+        }
+
+        .guide-change {
+          width: 20px;
+          height: 20px;
+          border: 1px solid $border-color;
+          background-color: white;
+          background-image: linear-gradient(to top, black 0%, black 100%);
+          background-size: 2px 2px;
+          background-position: center center;
+          background-repeat: repeat-y;
+          vertical-align: middle;
+
+          &.cut {
+            background-position: center center;
+            background-repeat: repeat-x;
+          }
+
+          &.easing {
+            background-repeat: no-repeat;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB3SURBVChTY9iefGyO+gasCCjFgCaEhrBLf33x/f6uZ0AGuvRc7Y37i8/8////3JQbQC5CekPwgRsrH/z48Aso9+bah8VmW6HSQBaQDxQFygFVANXB9YCkgeYA5YBmAk2GS0AQSBroCqBbkEXhCN1paAhvsCQfAwDynahhkocJpQAAAABJRU5ErkJggg==);
+            border: 0px;
+          }
+        }
+
+
+        .guide-unit {
+          display: grid;
+          position: relative;
+          grid-template-columns: 1fr 40px;
+
+          > input[type="number"] {
+            display: none;
+            outline: none;
+            flex: 3;
+            width: 100%;
+            appearance: none;
+            border: 1px solid $border-color;
+            background-color: white;
+            vertical-align: middle;
+          }
+          &.percent > .percent {
+            display: inline-block;
+          }
+          &.px > .px {
+            display: inline-block;
+          }
+          &.em > .em {
+            display: inline-block;
+          }
+
+          select {
+            flex: 1;
+            appearance: none;
+            border: 1px solid $border-color;
+            background-color: white;
+            border-radius: 0px;
+            display: inline-block;
+            vertical-align: middle;
+            height: 18px;
+            outline: none;
+            box-sizing: border-box;
+          }
+        }
+
+      }
+    }
+
     .hue-container {
       width: 100%;
-      height: 40px;
+      height: $hue-size;
       margin-top: 0px;
       left: 0px;
       right: 0px;
@@ -146,7 +237,7 @@
         position: relative;
         width: 100%;
         cursor: copy;
-        height: 40px;
+        height: $hue-size;
         z-index: 1;
         box-sizing: border-box;
         border: 1px solid black;
@@ -161,12 +252,13 @@
         border-radius: 50%;
         display: inline-block;
         left: 0px;
-        top: 30px;
-        transform: translateX(-50%);
+        top: 100%;
+        transform: translateX(-50%) translateY(-50%);
         position: absolute;
         cursor: pointer;
         transition: top 0.3s ease-out;
         pointer-events: all;
+        line-height: 0;
 
         .guide-line {
           pointer-events: none;
@@ -212,18 +304,20 @@
           background-color: transparent;
           // border: 2px solid white;
           // box-shadow: 0 0 2px 0px rgba(255, 255, 255, 0.6);
-          width: 14px;
-          height: 14px;
+          width: $colorstep-size;
+          height: $colorstep-size;
           transform: none;
           border-radius: 50%;
           display: inline-block;
-          top: 0px;
-          transform: translateX(-0.5px);
           cursor: pointer;
           transition: top 0.3s ease-out;
           pointer-events: all;
           border: 1px solid black !important;
           box-sizing: border-box;
+
+          &.cut {
+            border-radius: 0px;
+          }
         }
 
         .guide-unit {
@@ -273,21 +367,11 @@
 
         &.selected {
           z-index: 1;
-          top: 42px;
-          .guide-line {
-            height: 32px;
+
+          .guide-step {
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 1);
           }
 
-          .guide-change,
-          .guide-unit {
-            pointer-events: all;
-          }
-
-          .guide-change,
-          .guide-step,
-          .guide-unit {
-            opacity: 1;
-          }
         }
       }
     }

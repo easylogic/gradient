@@ -27,11 +27,11 @@ export default class CSSEditor extends UIElement {
                         <Inspector />   
                     </div>
                     <div class="layout-right">
+                      <BackgroundPropertyPopup />
+                      <BoxShadowPropertyPopup />                          
                       <VerticalColorStep />
                       <FillPicker />
                       <ColorPicker  />
-                      <BackgroundPropertyPopup />
-                      <BoxShadowPropertyPopup />      
                     </div>                    
                     <div class="layout-body">
                         <!-- LayerToolbar /-->
@@ -41,7 +41,6 @@ export default class CSSEditor extends UIElement {
                 <div class="layout-footer">
                   <ExportWindow />   
                   <div class="ad">
-                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                     <ins class="adsbygoogle"
                         style="display:block; text-align:center;"
                         data-ad-layout="in-article"

@@ -283,6 +283,8 @@ const applyElementAttribute = ($element, key, value) => {
           $element.addClass(k);
         }
       });
+    } else if (key === 'cssText') {
+      $element.cssText(value);
     } else {
       $element.addClass(value);
     }

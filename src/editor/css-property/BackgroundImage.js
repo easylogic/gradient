@@ -163,13 +163,10 @@ export class BackgroundImage extends Property {
     var json = this.json;
     var backgroundSize = "auto";
 
+    // console.log(json.parent);
+
     if (json.size == "contain" || json.size == "cover") {
       backgroundSize = json.size;
-    } else if (json.width.isPercent() && json.width.isPercent()) {
-      // 기본 사이즈가 아닌 것만 표시 (100% 100% 이 아닐 때 )
-      if (+json.width !== 100 || +json.height !== 100) {
-        backgroundSize = `${json.width} ${json.height}`;
-      }
     } else {
       backgroundSize = `${json.width} ${json.height}`;
     }
@@ -199,7 +196,7 @@ export class BackgroundImage extends Property {
       ...this.toBackgroundPositionCSS(),
       ...this.toBackgroundSizeCSS(),
       ...this.toBackgroundRepeatCSS(),
-      ...this.toBackgroundBlendCSS()
+      ...this.toBackgroundBlendCSS(),
     };
 
     return results;

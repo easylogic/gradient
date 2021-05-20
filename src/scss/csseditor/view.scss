@@ -21,4 +21,25 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
     transform: translateX(-50%);
     background-color: white;
   }
+
+  .gradient-control {
+    position: absolute;
+    width: 500px;
+    height: 400px;
+    left: 50%;
+    top: 50px;
+    transform: translateX(-50%);
+
+    .gradient-layer {
+      position: absolute;
+      border: 1px solid white;
+      box-sizing: border-box;
+      pointer-events: all;
+
+      &[data-selected="true"] {
+        z-index: 100;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }  
 }

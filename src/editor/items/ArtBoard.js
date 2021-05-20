@@ -33,7 +33,7 @@ export class ArtBoard extends GroupItem {
       border: {},
       borderRadius: {},
       outline: { width: Length.px(0), color: "solid", style: 'none' },
-      borderImage: { width: 1, outset: 0, slice: Length.percent(100), repeat: 'stretch', source: '' },
+      borderImage: { width: 0, outset: 0, slice: Length.percent(100), repeat: 'stretch', source: '' },
       backdropFilters: [],
       backgroundImages: [],
       boxShadows: [],
@@ -122,6 +122,7 @@ export class ArtBoard extends GroupItem {
     return this.addBackgroundImage(
       new BackgroundImage({
         checked: true,
+        parent: this.ref,
         ...data
       })
     );
@@ -145,6 +146,22 @@ export class ArtBoard extends GroupItem {
 
   sortBackgroundImage(startIndex, targetIndex) {
     this.sortItem(this.json.backgroundImages, startIndex, targetIndex);
+  }
+
+  getSelectedBackgroundIndex() {
+    return this.backgroundImages.map((it, index) => [it.selected, index]).find(it => it[0])[1]
+  }
+
+  getSelectedBackgroundImage() {
+    return this.backgroundImages.find(it => it.selected);
+  }  
+
+  selectBackgroundImage(selectedIndex) {
+    this.backgroundImages.forEach((it, index) => {
+      it.selected = index === selectedIndex
+    })
+
+    return this;
   }
 
   sortFilter(startIndex, targetIndex) {
@@ -335,6 +352,17 @@ export class ArtBoard extends GroupItem {
   toBorderImageCSS() {
     var results = {};
     var borderImage = this.json.borderImage;
+    var border = this.json.border;
+
+
+    if (borderImage.width > 0) {
+      results['border'] = this.getBorderString({
+        color: 'black',
+        style: 'solid',
+        ...border.all, 
+        width: Length.px(1)
+      });
+    }
 
     results['border-image-source'] = new BackgroundImage().setGradient(borderImage.source).image.toString() ;
     results['border-image-slice'] = borderImage.slice;

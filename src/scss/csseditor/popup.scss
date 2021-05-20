@@ -57,7 +57,8 @@
   }
 
   &.background-property-popup {
-    width: 260px;
+    box-sizing: border-box;
+    width: 100%;
 
     .size-list {
       button {

@@ -1,5 +1,5 @@
 import UIElement, { EVENT } from "../../../util/UIElement";
-import { CHANGE_EDITOR, CHANGE_SELECTION } from "../../types/event";
+import { CHANGE_COLORSTEP, CHANGE_EDITOR, CHANGE_SELECTION } from "../../types/event";
 import { editor } from "../../../editor/editor";
 import { ColorStep } from "../../../editor/image-resource/ColorStep";
 import {
@@ -64,6 +64,7 @@ export default class VerticalColorStep extends UIElement {
                         <div class="hue" ref="$steps">
                             <div class='step-list' ref="$stepList"></div>
                         </div>
+                        <div class="color-list" ref="$colorList"></div>                        
                     </div>
                 </div>
                 <div class='gradient-tools'>
@@ -247,7 +248,7 @@ export default class VerticalColorStep extends UIElement {
   }
 
   [EVENT("hideGradientEditor", CHANGE_EDITOR, CHANGE_SELECTION)]() {
-    // this.$el.hide();
+    this.$el.hide();
   }
 
   getStepPosition(step) {
@@ -294,27 +295,32 @@ export default class VerticalColorStep extends UIElement {
   // load 후에 이벤트를 재설정 해야한다.
   [LOAD("$stepList")]() {
     return this.colorsteps.map((step, index) => {
-      var cut = step.cut ? "cut" : EMPTY_STRING;
-      var unitValue = step.getUnitValue(this.getMaxValue());
-
+      var cut = step.cut ? "cut" : EMPTY_STRING;      
       return /*html*/`
             <div 
                 class='drag-bar ${step.selected ? "selected" : EMPTY_STRING}' 
                 id="${step.id}"
                 style="left: ${this.getStepPosition(step)}px;"
             >   
-                <div 
-                    class="guide-step step" 
-                    data-index="${index}" 
-                    style=" border-color: ${step.color};background-color: ${
-        step.color
-      };"
-                ></div>
-                <div class='guide-line' 
-                    style="background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 10%, ${
-                      step.color
-                    } 100%) ;"></div>
-                <div class="guide-change ${cut}" data-index="${index}"></div>
+                <div class="guide-step step ${cut}" data-index="${index}" style=" border-color: ${step.color};background-color: ${step.color};"></div>
+            </div>
+        `;
+    });
+  }
+
+
+  // load 후에 이벤트를 재설정 해야한다.
+  [LOAD("$colorList")]() {
+    return this.colorsteps.map((step, index) => {
+      var cut = step.cut ? "cut" : EMPTY_STRING;
+      var unitValue = step.getUnitValue(this.getMaxValue());
+
+      return /*html*/`
+            <div class='color-list-item ${step.selected ? "selected" : EMPTY_STRING}' data-step-index="${index}">   
+                <div class="guide-change ${cut}" data-index="${index}"></div>            
+                <div class="guide-step step" data-index="${index}" >
+                  <div class="preview" style=" border-color: ${step.color};background-color: ${step.color};"></div>
+                </div>
                 <div class="guide-unit ${step.getUnit()}">
                     <input type="number" class="percent" min="-100" max="100" step="0.1"  value="${
                       unitValue.percent
@@ -345,6 +351,8 @@ export default class VerticalColorStep extends UIElement {
       "background-image",
       LinearGradient.toLinearGradient(test)
     );
+
+    this.load('$stepList');
   }
 
   /* slide 영역 min,max 구하기  */
@@ -505,7 +513,7 @@ export default class VerticalColorStep extends UIElement {
     this.updateColorStep();
   }
 
-  [CLICK("$steps .guide-change")](e) {
+  [CLICK("$colorList .guide-change")](e) {
     var index = +e.$delegateTarget.attr("data-index");
 
     var step = this.colorsteps[index];
@@ -519,24 +527,25 @@ export default class VerticalColorStep extends UIElement {
     }
   }
 
-  [CHANGE("$steps .guide-unit select.unit")](e) {
+  [CHANGE("$colorList .guide-unit select.unit")](e) {
     var unit = e.$delegateTarget.val();
     var id = e.$delegateTarget.attr("data-colorstep-id");
 
-    var step = editor.get(id);
+    var step = this.colorsteps.find(it => it.id === id);
 
     if (step) {
       step.changeUnit(unit, this.getMaxValue());
       editor.send(CHANGE_COLORSTEP, step);
 
       var $parent = e.$delegateTarget.parent();
+      console.log($parent);
       $parent
         .removeClass(UNIT_PERCENT, UNIT_PX, UNIT_EM)
         .addClass(step.getUnit());
     }
   }
 
-  [INPUT("$steps input.percent")](e) {
+  [INPUT("$colorList input.percent")](e) {
     var value = +e.$delegateTarget.val();
     var index = +e.$delegateTarget.attr("data-index");
 
@@ -554,7 +563,7 @@ export default class VerticalColorStep extends UIElement {
     }
   }
 
-  [INPUT("$steps input.px")](e) {
+  [INPUT("$colorList input.px")](e) {
     var value = +e.$delegateTarget.val();
     var index = +e.$delegateTarget.attr("data-index");
 
@@ -572,7 +581,7 @@ export default class VerticalColorStep extends UIElement {
     }
   }
 
-  [INPUT("$steps input.em")](e) {
+  [INPUT("$colorList input.em")](e) {
     var value = +e.$delegateTarget.val();
     var index = +e.$delegateTarget.attr("data-index");
 
@@ -605,11 +614,13 @@ export default class VerticalColorStep extends UIElement {
   [POINTERSTART("$steps .step") + PREVENT + MOVE() + END()](e) {
     this.xy = e.xy;
     this.currentStep = e.$delegateTarget;
-    this.currentColorStep = this.colorsteps[
-      +this.currentStep.attr("data-index")
-    ];
-    this.currentStepBox = this.currentStep.parent();
-    this.currentUnit = this.currentStepBox.$(".guide-unit");
+    const index = +this.currentStep.attr("data-index");
+    this.currentColorStep = this.colorsteps[index];
+    this.currentStepBox =  this.currentStep.parent();
+    
+    const $colorListItem = this.refs.$colorList.$(`[data-step-index="${index}"]`);
+
+    this.currentUnit = $colorListItem.$(".guide-unit");
     this.currentUnitPercent = this.currentUnit.$(".percent");
     this.currentUnitPx = this.currentUnit.$(".px");
     this.currentUnitEm = this.currentUnit.$(".em");
