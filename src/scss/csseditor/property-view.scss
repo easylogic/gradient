@@ -3,6 +3,10 @@
   border-bottom: 1px solid rgba($border-color, 0.5);
   //   padding-bottom: 5px;
 
+  &.gradients {
+    background-image: linear-gradient(89deg, white, #ffff0061);
+  }
+
   &.show {
     > .property-body {
       display: block;

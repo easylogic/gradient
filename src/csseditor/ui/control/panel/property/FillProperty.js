@@ -73,6 +73,10 @@ export default class FillProperty extends BaseProperty {
     `;
   }
 
+  getClassName() {
+    return "gradients";
+  }
+
   getColorStepList(image) {
     switch (image.type) {
       case "static-gradient":

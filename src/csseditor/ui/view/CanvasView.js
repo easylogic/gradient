@@ -85,10 +85,17 @@ export default class CanvasView extends UIElement {
     var current = editor.selection.current;    
     if (!current) return;
     const image = current.getSelectedBackgroundImage()
-    if (!image) return;
+    if (!image) {
+      this.refs.$controlLayer.toggle(false);
+      return;
+    }
+
     const { width, height, x, y, size} = image; 
     const css = size === 'auto' ? { width, height, left: x, top: y} : {};
 
+    if (this.refs.$controlLayer.css('display') === 'none') {
+      this.refs.$controlLayer.toggle(true);
+    }
     this.refs.$controlLayer.css(css);
   }
 
@@ -247,6 +254,7 @@ export default class CanvasView extends UIElement {
 
   [EVENT("selectGradient")] () {
     this.load("$control");
+    this.updateControlLayer();
   }
 
 
