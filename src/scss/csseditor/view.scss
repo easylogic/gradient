@@ -35,11 +35,84 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
       border: 1px solid white;
       box-sizing: border-box;
       pointer-events: all;
+      cursor: move;
 
-      &[data-selected="true"] {
+      &[data-selected="true"],
+      &:hover {
         z-index: 100;
-        background-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(0, 0, 0, 0.5);
       }
+    }
+  }  
+
+  .gradient-transform {
+    position: absolute;
+    width: 500px;
+    height: 400px;
+    left: 50%;
+    top: 50px;
+    transform: translateX(-50%);
+    pointer-events: none;
+
+    .control-layer {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+    }
+
+    .control-point {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border: 1px solid white;
+      background-color: purple;
+      box-sizing: border-box;
+      pointer-events: all;
+      transform: translate(-50%, -50%);
+
+      &[data-direction="top"] {
+        top: 0%;
+        left: 50%;
+        cursor: row-resize;        
+      }
+
+      &[data-direction="bottom"] {
+        top: 100%;
+        left: 50%;
+        cursor: row-resize;
+      }      
+
+      &[data-direction="right"] {
+        top: 50%;
+        left: 100%;
+        cursor: col-resize;        
+      }      
+
+      &[data-direction="left"] {
+        top: 50%;
+        left: 0%;
+        cursor: col-resize;
+      }      
+
+      &[data-direction="width"] {
+        height: 20px;
+        top: 50%;
+        left: calc(100% + 20px);
+        background-color: white;
+        background-image: linear-gradient(to right, red, black);
+        cursor: w-resize;
+      }
+
+      &[data-direction="height"] {
+        width: 20px;
+        top: calc(100% + 20px);
+        left: 50%;
+        background-color: white;
+        background-image: linear-gradient(to bottom, red, black);
+        cursor: n-resize;
+      }      
     }
   }  
 }

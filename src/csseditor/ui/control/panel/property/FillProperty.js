@@ -111,6 +111,8 @@ export default class FillProperty extends BaseProperty {
       const imageCSS = CSS_TO_STRING(it.toBackgroundImageCSS());
       const selectedClass = it.selected ? "selected" : "";
 
+      console.log(imageCSS);
+
       if (it.selected) {
         this.selectedIndex = index;
       }
@@ -388,7 +390,7 @@ export default class FillProperty extends BaseProperty {
     var $el = this.getRef("miniView", this.selectedIndex);
     if ($el) {
       $el.css({
-        ...backgroundImage.toCSS(),
+        ...backgroundImage.toBackgroundImageCSS(),
         "background-size": "cover"
       });
     }
@@ -428,7 +430,7 @@ export default class FillProperty extends BaseProperty {
     if (!backgroundImage) return;
     var $el = this.getRef("miniView", this.selectedIndex);
     if ($el) {
-      $el.cssText(backgroundImage.toString());
+      $el.cssText(CSS_TO_STRING(backgroundImage.toBackgroundImageCSS()));
     }
 
     var $el = this.getRef("fillTitle", this.selectedIndex);

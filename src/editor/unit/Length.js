@@ -195,6 +195,7 @@ export class Length {
 
   set(value) {
     this.value = value;
+    return this;
   }
 
   add(obj) {

@@ -124,6 +124,9 @@ $sub-editor-size: 70px;
 
     .color-list {
       margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
       
       .color-list-item {
         display: grid;

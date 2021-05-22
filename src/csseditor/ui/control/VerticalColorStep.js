@@ -315,8 +315,10 @@ export default class VerticalColorStep extends UIElement {
       var cut = step.cut ? "cut" : EMPTY_STRING;
       var unitValue = step.getUnitValue(this.getMaxValue());
 
+      const order = Math.floor(unitValue.percent * 1000000);
+
       return /*html*/`
-            <div class='color-list-item ${step.selected ? "selected" : EMPTY_STRING}' data-step-index="${index}">   
+            <div class='color-list-item ${step.selected ? "selected" : EMPTY_STRING}' data-step-index="${index}" style="order: ${order}">   
                 <div class="guide-change ${cut}" data-index="${index}"></div>            
                 <div class="guide-step step" data-index="${index}" >
                   <div class="preview" style=" border-color: ${step.color};background-color: ${step.color};"></div>
