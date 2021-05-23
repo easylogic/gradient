@@ -125,6 +125,7 @@ export default class OutlineProperty extends BaseProperty {
       changeEvent: "changeOutlineColor",
       color: this.refs.$color.css("background-color")
     });
+    this.emit("hideBackgroundPropertyPopup")
   }
 
   [EVENT("changeOutlineColor")](color) {

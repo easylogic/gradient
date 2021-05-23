@@ -36,11 +36,18 @@
       display: flex;
     }
     
-    > .information-item {
+    .information-item-container {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      grid-column-gap: 2px;
+      text-align: left;
+      padding: 0px 5px;
+    }
+
+    .information-item {
       display:none;
       position: relative;
-      padding: 0px 5px;
-      padding-left: 9px;
+      // padding-left: 9px;
       box-sizing: border-box;
       margin-right:40px;
 

@@ -30,6 +30,8 @@ export default class CanvasView extends UIElement {
                     <div class="control-point" data-direction="bottom"></div>                  
                     <div class="control-point" data-direction="width"></div>
                     <div class="control-point" data-direction="height"></div>
+                    <div class="control-point" data-direction="width-left"></div>
+                    <div class="control-point" data-direction="height-top"></div>                    
                   </div>
 
                 </div>
@@ -104,11 +106,18 @@ export default class CanvasView extends UIElement {
     const direction = e.$delegateTarget.attr('data-direction');
 
     this.selectedBackgroundImage = editor.selection.current.getSelectedBackgroundImage();   
-    const { width, height } = this.selectedBackgroundImage;    
+    const { x, y, width, height } = this.selectedBackgroundImage;    
 
     switch(direction) {
     case 'height':
       this.selectedBackgroundImage.reset({
+        height: width.clone()
+      })
+        
+      break;
+    case 'height-top':
+      this.selectedBackgroundImage.reset({
+        y: y.clone().add(height).sub(width.clone()),
         height: width.clone()
       })
         
@@ -119,6 +128,13 @@ export default class CanvasView extends UIElement {
         })
           
         break;
+    case 'width-left':
+      this.selectedBackgroundImage.reset({
+        x: x.clone().add(width).sub(height.clone()),
+        width: height.clone()
+      })
+        
+      break;
     default: return; 
     }
 

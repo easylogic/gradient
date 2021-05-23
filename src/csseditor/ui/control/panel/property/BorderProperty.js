@@ -82,8 +82,11 @@ export default class BorderProperty extends BaseProperty {
             <div class="slider">
               <label>Color</label>
             </div>
-            <div class="input-ui">
+            <div class="input-ui color-ui">
               <div class="color" ref="$color"></div>
+              <div>
+                  <input type="text" ref="$colorText" />
+              </div>
             </div>
           </div>
         </div>
@@ -155,10 +158,12 @@ export default class BorderProperty extends BaseProperty {
       changeEvent: "changeBorderColor",
       color: this.refs.$color.css("background-color")
     });
+    this.emit("hideBackgroundPropertyPopup")
   }
 
   [EVENT("changeBorderColor")](color) {
     this.refs.$color.css("background-color", color);
+    this.refs.$colorText.val(color);
     this.refreshBorderInfo();
   }
 }
