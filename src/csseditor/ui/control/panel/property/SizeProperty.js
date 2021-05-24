@@ -22,6 +22,10 @@ export default class SizeProperty extends BaseProperty {
     this.refs.$height.val(data.height.value);
   }
 
+  getClassName() {
+    return "size";
+  }
+
   getBody() {
     return html`
       <div class="property-item size-item">

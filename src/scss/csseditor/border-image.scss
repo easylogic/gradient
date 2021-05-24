@@ -27,6 +27,14 @@
 .border-image-item {
   display: block !important;
 
+  .gradient-preview {
+    @include transparent-background();
+    
+    .gradient-view {
+      height: 100%;
+    }
+  }
+
   .input-group {
     width: 100%;
     display: grid;

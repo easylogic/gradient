@@ -29,6 +29,10 @@ export default class BorderProperty extends BaseProperty {
     this.refresh();
   }
 
+  getClassName() {
+    return "border";
+  }
+
   [LOAD("$borderDirection")]() {
     var current = editor.selection.current || { border: {} };
 

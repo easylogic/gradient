@@ -14,6 +14,11 @@ export default class BackgroundColorProperty extends BaseProperty {
   getTitle() {
     return "Background Color";
   }
+
+  getClassName() {
+    return "background-color";
+  }
+
   getBody() {
     return `
             <div class='property-item background-color' ref='$backgroundColor'></div>

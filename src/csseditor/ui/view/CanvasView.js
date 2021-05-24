@@ -18,7 +18,7 @@ export default class CanvasView extends UIElement {
     this[EVENT("refreshCanvas")]();
   }
   template() {
-    return `
+    return /*html*/`
             <div class='page-view'>
                 <div class="page-canvas" ref="$canvas"></div>         
                 <div class="gradient-control" ref="$control"></div>       
@@ -28,6 +28,10 @@ export default class CanvasView extends UIElement {
                     <div class="control-point" data-direction="right"></div>
                     <div class="control-point" data-direction="left"></div>
                     <div class="control-point" data-direction="bottom"></div>                  
+                    <div class="control-point" data-direction="bottom-right"></div>   
+                    <div class="control-point" data-direction="bottom-left"></div>    
+                    <div class="control-point" data-direction="top-right"></div>   
+                    <div class="control-point" data-direction="top-left"></div>                                      
                     <div class="control-point" data-direction="width"></div>
                     <div class="control-point" data-direction="height"></div>
                     <div class="control-point" data-direction="width-left"></div>
@@ -35,8 +39,27 @@ export default class CanvasView extends UIElement {
                   </div>
 
                 </div>
+                <div class="gradient-list-view">
+                  <div ref="$gradientListView">
+                  
+                  </div>
+                  <div class="add-button">
+                    <button type="button" ref="$add"> + </button>
+                  </div>
+                </div>
+
             </div>
         `;
+  }
+
+  [CLICK('$add')] () {
+
+    // ArtBoard, Layer 에 새로운 BackgroundImage 객체를 만들어보자.
+    editor.selection.current.createBackgroundImage({ selected: true });
+
+    this.emit('selectGradient');    
+    this.emit('refreshCanvas');
+    this.trigger('refreshCanvas');
   }
 
   [EVENT("caculateSize")](targetEvent) {
@@ -69,7 +92,7 @@ export default class CanvasView extends UIElement {
   [LOAD('$control')] () {
     var current = editor.selection.current;
 
-    return current.backgroundImages.map((it, index) => {
+    return current.backgroundImages.map((it, index) => [it, index]).filter(it => it[0].selected).map(([it, index]) => {
 
       const { width, height, x, y, size} = it; 
       const css = size === 'auto' ? { width, height, left: x, top: y} : {};
@@ -81,6 +104,29 @@ export default class CanvasView extends UIElement {
       })}"></div>`
     })
     
+  }
+
+
+  [LOAD("$gradientListView")]() {
+    var current = editor.selection.current;
+
+    if (!current) return EMPTY_STRING;
+
+    return current.backgroundImages.map((it, index) => {
+      var image = it.image;
+      const imageCSS = CSS_TO_STRING(it.toBackgroundImageCSS());
+      const selectedClass = it.selected ? "selected" : "";
+
+      return `
+        <div class='fill-item ${selectedClass}' data-index='${index}'>
+            <div class="fill-item-container">
+              <div class='preview' data-index="${index}">
+                  <div class='mini-view' style="${imageCSS}"></div>
+              </div>
+            </div>
+        </div>
+      `;
+    });
   }
 
   updateControlLayer() {
@@ -99,6 +145,15 @@ export default class CanvasView extends UIElement {
       this.refs.$controlLayer.toggle(true);
     }
     this.refs.$controlLayer.css(css);
+  }
+
+  [CLICK('$gradientListView .fill-item')] (e) {
+    const index = +e.$delegateTarget.attr('data-index');
+    editor.selection.current.selectBackgroundImage(index);
+
+    this.emit('selectGradient');    
+    this.emit('refreshCanvas');
+    this.trigger('refreshCanvas');
   }
 
   [CLICK('$controlLayer [data-direction]') + PREVENT + STOP] (e) {
@@ -141,7 +196,39 @@ export default class CanvasView extends UIElement {
 
     this.trigger('refreshCanvas');
     this.emit('refreshCanvas');
+    this.emit('selectGradient');    
 
+  }
+
+  createSnapPointList () {
+    const pointList = []
+    editor.selection.current.backgroundImages.filter(it => !it.selected).forEach(it => {
+      const { x, y, width: w, height: h } = it;    
+      this.oldX = x.clone(); 
+      this.oldY = y.clone(); 
+      this.oldW = w.clone(); 
+      this.oldH = h.clone();               
+
+      pointList.push(
+        {x: +this.oldX, y: +this.oldY},
+        {x: +this.oldX + +this.oldW, y: +this.oldY},
+        {x: +this.oldX + +this.oldW, y: +this.oldY + +this.oldH},
+        {x: +this.oldX, y: +this.oldY + +this.oldH},
+        {x: +this.oldX + +this.oldW/2, y: +this.oldY + +this.oldH/2},
+      );
+    });
+
+    const {width, height} = editor.selection.current;
+
+    pointList.push(
+      {x: 0, y: 0},
+      {x: +width, y: 0},
+      {x: +width, y: +height},
+      {x: 0, y: +height},
+      {x: +width/2, y: +height/2},
+    );
+
+    return pointList;
   }
 
   [POINTERSTART('$controlLayer [data-direction]') + MOVE('moveDirection') + END('moveEndDirection') + PREVENT + STOP]  (e) {
@@ -157,6 +244,8 @@ export default class CanvasView extends UIElement {
     const {width, height} = editor.selection.current;
     this.oldWidth = width.clone().value;
     this.oldHeight = height.clone().value;    
+
+    this.snapPoint = this.createSnapPointList()
   }
 
   moveDirection (dx, dy) {
@@ -166,6 +255,7 @@ export default class CanvasView extends UIElement {
     let newW = this.oldW.toPx(this.oldWidth);
     let newH = this.oldH.toPx(this.oldHeight);
 
+    const rate = this.oldH/this.oldW
 
     switch(this.direction) {
     case 'right': 
@@ -199,6 +289,53 @@ export default class CanvasView extends UIElement {
       }
 
       break; 
+
+    case 'bottom-right': 
+    case 'top-right':     
+      // center 를 기준으로 등비율로 사이즈 조절된다. 
+      // 즉, width 의 비율만큼 height 를 결정한다. 
+      // (x + width + dx) - (x + width/2) / (width/2)
+      var centerX = +newX + newW/2;
+      var nextW = (newW/2 + dx);
+
+      if (nextW > 0) {
+        newW = Length.px(nextW * 2);
+        newX = Length.px(centerX - (newW/2))
+      } else {
+        newW = Length.px(Math.abs(nextW) * 2);
+        newX = Length.px(centerX + nextW)
+  
+      }
+
+      var centerY = +newY + newH/2;
+      newH = Length.px(newW * rate);
+      newY = Length.px(centerY - (newH/2))
+
+      break;
+
+    case 'bottom-left': 
+    case 'top-left': 
+      // center 를 기준으로 등비율로 사이즈 조절된다. 
+      // 즉, width 의 비율만큼 height 를 결정한다. 
+      // (x + width + dx) - (x + width/2) / (width/2)
+
+      var centerX = +newX + newW/2;
+      var nextW = (newW/2 - dx);
+
+      if (nextW > 0) {
+        newW = Length.px(nextW * 2);
+        newX = Length.px(centerX - (newW/2))
+      } else {
+        newW = Length.px(Math.abs(nextW) * 2);
+        newX = Length.px(centerX + nextW)
+  
+      }
+
+      var centerY = +newY + newH/2;
+      newH = Length.px(newW * rate);
+      newY = Length.px(centerY - (newH/2))
+
+      break;       
     case 'top': 
 
       if (dy > newH.value) {
@@ -213,8 +350,43 @@ export default class CanvasView extends UIElement {
       break; 
     }
 
+    const {x, y, width, height} = this.snapBackgroundImage(newX, newY, newW, newH);
+
+    this.selectedBackgroundImage.reset({ x, y, width, height})
+
+    this.trigger('refreshCanvas');
+    this.emit('refreshCanvas');
+
+  }
+
+  snapBackgroundImage (x, y, width, height) {
+
+    return { x, y, width, height}
+  }
+
+  moveEndDirection() {
+    this.emit('selectGradient');
+  }
+
+  [DOUBLECLICK('$control .gradient-layer')] (e) {
+    this.selectedBackgroundImage = editor.selection.current.getSelectedBackgroundImage();
+
+    const { x, y, width: w, height: h } = this.selectedBackgroundImage;    
+    this.oldX = x.clone(); 
+    this.oldY = y.clone(); 
+    this.oldW = w.clone(); 
+    this.oldH = h.clone();     
+
+    const {width, height} = editor.selection.current;
+    this.oldWidth = width.clone().value;
+    this.oldHeight = height.clone().value;
+
+
+    const centerX =  this.oldWidth/2 - this.oldW.value/2;
+    const centerY =  this.oldHeight/2 - this.oldH.value/2;
+
     this.selectedBackgroundImage.reset({
-      x: newX, y: newY, width: newW, height: newH
+      x: Length.px(centerX), y: Length.px(centerY)
     })
 
     this.trigger('refreshCanvas');
@@ -241,6 +413,48 @@ export default class CanvasView extends UIElement {
     this.oldWidth = width.clone().value;
     this.oldHeight = height.clone().value;
 
+    this.snapPoint = this.createSnapPointList()    
+
+    console.log(this.snapPoint)
+
+  }
+
+  checkSnapPoint(newX, newY, width, height) {
+
+
+    const x = newX.clone();
+    const y = newY.clone();
+
+    const x2 = x.value + width.value; 
+    const y2 = y.value + height.value; 
+
+    const centerX = x.value + width.value/2; 
+    const centerY = y.value + height.value/2; 
+
+    let checkedXList1 = this.snapPoint.filter(it => (Math.abs(x.value - it.x) <= 3));
+    let checkedXList2 = this.snapPoint.filter(it => (Math.abs(centerX - it.x) <= 3));
+    let checkedXList3 = this.snapPoint.filter(it => (Math.abs(x2 - it.x) <= 3));
+    let lastX = newX;
+
+    if (checkedXList1.length) lastX = Length.px(checkedXList1[0].x).clone();
+    else if (checkedXList2.length) lastX = Length.px(checkedXList2[0].x - width.value/2).clone();
+    else if (checkedXList3.length) lastX = Length.px(checkedXList3[0].x - width.value).clone();
+
+    console.log(checkedXList1,checkedXList2,checkedXList3, x, x2, centerX)
+
+
+    let checkedYList1 = this.snapPoint.filter(it => (Math.abs(y.value - it.y) <= 3));
+    let checkedYList2 = this.snapPoint.filter(it => (Math.abs(centerY - it.y) <= 3));
+    let checkedYList3 = this.snapPoint.filter(it => (Math.abs(y2 - it.y) <= 3));
+    let lastY = newY;
+
+    if (checkedYList1.length) lastY = Length.px(checkedYList1[0].y).clone();
+    else if (checkedYList2.length) lastY = Length.px(checkedYList2[0].y - height.value/2).clone();
+    else if (checkedYList3.length) lastY = Length.px(checkedYList3[0].y - height.value).clone();    
+
+    console.log(lastX, lastY, width, height);
+
+    return { x: lastX.clone(), y: lastY.clone(), width: width.clone(), height: height.clone()}
   }
  
   moveGradientLayer (dx, dy) {
@@ -249,9 +463,9 @@ export default class CanvasView extends UIElement {
     const newW = this.oldW.toPx(this.oldWidth).floor();
     const newH = this.oldH.toPx(this.oldHeight).floor();
 
-    this.selectedBackgroundImage.reset({
-      x: newX, y: newY, width: newW, height: newH
-    })
+    const {x, y, width, height} = this.checkSnapPoint(newX, newY, newW, newH);
+
+    this.selectedBackgroundImage.reset({x, y, width, height})
 
     this.trigger('refreshCanvas');
     this.emit('refreshCanvas');

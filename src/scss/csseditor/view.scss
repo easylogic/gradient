@@ -11,15 +11,80 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
   bottom: 0px;
   top: 0px;
   background-color: $border-color;
+  pointer-events: all;
+  overflow: auto;
 
   .page-canvas {
-    position: absolute;
+    position: relative;
     width: 500px;
     height: 400px;
     left: 50%;
-    top: 50px;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
     background-color: white;
+  }
+
+  .gradient-list-view {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    display: inline-block;
+
+    .add-button {
+      width: 40px;
+      height: 40px;      
+      background-color: rgba(255, 255, 255, 0.8);
+      box-sizing: border-box;
+      box-shadow: 0 0 0 1px rgb(95, 95, 95);
+      pointer-events: all;
+
+      button {
+        background-color: transparent;
+        border:0px;
+        width:100%;
+        height:100%;
+        display: inline-block;
+        cursor: pointer;
+      }
+    }
+
+    .fill-item {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      margin-bottom: 5px;
+      text-align: center;
+      box-sizing: border-box;
+      cursor: pointer;
+      pointer-events: all;      
+
+      &:hover {
+        background-color: rgba(255, 0, 0, 0.5);
+      }
+
+      &.selected {
+        box-shadow: 2px 2px 4px 0px #3e3e3e;
+      }
+
+      .fill-item-container {
+        display: grid;
+        grid-template-columns: 40px 1fr;
+      }
+
+      .preview {
+        display: grid;
+        cursor: pointer;
+
+        .mini-view {
+          display: block;
+          height: 100%;
+          box-sizing: border-box;
+          pointer-events: none;
+          // border-radius: 100%;
+        }
+      }
+
+    }
   }
 
   .gradient-control {
@@ -27,8 +92,8 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
     width: 500px;
     height: 400px;
     left: 50%;
-    top: 50px;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
 
     .gradient-layer {
       position: absolute;
@@ -36,10 +101,10 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
       box-sizing: border-box;
       pointer-events: all;
       cursor: move;
+      display: none;
 
-      &[data-selected="true"],
-      &:hover {
-        z-index: 100;
+      &[data-selected="true"] {
+        display: block;
         border-color: rgba(0, 0, 0, 0.5);
       }
     }
@@ -50,8 +115,8 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
     width: 500px;
     height: 400px;
     left: 50%;
-    top: 50px;
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
     pointer-events: none;
 
     .control-layer {
@@ -75,25 +140,71 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
       &[data-direction="top"] {
         top: 0%;
         left: 50%;
-        cursor: row-resize;        
+        cursor: row-resize;   
+        width: 20px;
+        height: 5px;             
       }
 
       &[data-direction="bottom"] {
         top: 100%;
         left: 50%;
         cursor: row-resize;
+        width: 20px;
+        height: 6px;
       }      
+
+      &[data-direction="bottom-right"] {
+        top: 100%;
+        left: 100%;
+        cursor: row-resize;
+        width: 10px;
+        height: 10px;
+        cursor: nwse-resize;
+      }      
+
+      &[data-direction="bottom-left"] {
+        top: 100%;
+        left: 0%;
+        cursor: row-resize;
+        width: 10px;
+        height: 10px;
+        cursor: nesw-resize;
+      }      
+
+      &[data-direction="top-right"] {
+        top: 0%;
+        left: 100%;
+        cursor: row-resize;
+        width: 10px;
+        height: 10px;
+        cursor: nesw-resize;
+      }      
+
+      &[data-direction="top-left"] {
+        top: 0%;
+        left: 0%;
+        cursor: row-resize;
+        width: 10px;
+        height: 10px;
+        cursor: nwse-resize;
+      }      
+
+
 
       &[data-direction="right"] {
         top: 50%;
         left: 100%;
-        cursor: col-resize;        
+        cursor: col-resize;    
+        height: 20px;
+        width: 6px;            
       }      
 
       &[data-direction="left"] {
         top: 50%;
         left: 0%;
         cursor: col-resize;
+        height: 20px;
+        width: 6px;                    
       }      
 
       &[data-direction="width"] {

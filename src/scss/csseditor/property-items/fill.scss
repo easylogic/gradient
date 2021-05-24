@@ -5,13 +5,42 @@
   .fill-item {
     display: grid;
     height: 40px;
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: 20px 1fr;
     grid-column-gap: 5px;
     margin-bottom: 5px;
     text-align: center;
     box-sizing: border-box;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(255, 0, 0, 0.5);
+    }
+
     &.selected {
       background-color: rgba($border-color, 0.5);
+    }
+
+    .move-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(2, 1fr);
+      grid-column-gap: 2px;
+
+      button {
+        border: 0px;
+        cursor: pointer;
+        background-color: transparent;
+
+        &:hover {
+          background-color: rgb(177, 177, 177);
+          color: black;
+        }
+      }
+    }
+
+    .fill-item-container {
+      display: grid;
+      grid-template-columns: 40px 1fr;
     }
 
     .gradient-info {

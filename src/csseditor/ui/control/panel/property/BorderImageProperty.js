@@ -19,6 +19,10 @@ export default class BorderImageProperty extends BaseProperty {
     return "Border Image";
   }
 
+  getClassName() {
+    return "border-image";
+  }
+
   afterRender() {
     this.refresh();
     this.trigger('toggleBorderImage');
@@ -38,7 +42,7 @@ export default class BorderImageProperty extends BaseProperty {
             </div>
             <div class="input-ui">
               <div class='gradient-preview' ref="$preview" style='border:1px solid #adadad;cursor:pointer;'>
-                <div class='gradient-view'></div>
+                <div class='gradient-view' ref='$gradientView'></div>
               </div>
             </div>
           </div>
@@ -184,7 +188,7 @@ export default class BorderImageProperty extends BaseProperty {
         source
       });
   
-      this.refs.$preview.css('background-image', backgroundImage.image.toString())
+      this.refs.$gradientView.css('background-image', backgroundImage.image.toString())
     }
 
   }

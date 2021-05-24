@@ -62,6 +62,10 @@ export default class FilterProperty extends BaseProperty {
     return `<div class='property-item filter-list' ref='$filterList'></div>`;
   }
 
+  getClassName() {
+    return "filter";
+  }
+
   getTools() {
     return html`
       <select ref="$filterSelect" style="width:100px;">

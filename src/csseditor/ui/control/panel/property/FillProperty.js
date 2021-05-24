@@ -2,11 +2,7 @@ import BaseProperty from "./BaseProperty";
 import {
   LOAD,
   CLICK,
-  IF,
-  DROP,
-  DRAGSTART,
   PREVENT,
-  DRAGOVER
 } from "../../../../../util/Event";
 import { editor } from "../../../../../editor/editor";
 import { EVENT } from "../../../../../util/UIElement";
@@ -123,29 +119,31 @@ export default class FillProperty extends BaseProperty {
 
       return `
       <div class='fill-item ${selectedClass}' data-index='${index}' ref="fillIndex${index}" draggable='true' data-fill-type="${backgroundType}" >
-          <div class='preview' data-index="${index}" ref="preview${index}">
-              <div class='mini-view' style="${imageCSS}" ref="miniView${index}"></div>
+          <div class="move-container">
+            <button type="button" data-type="up">▲</button>
+            <button type="button" data-type="down">▽</button>
           </div>
-          <div class='fill-info' title="Please drag to change order">
-            <div class='gradient-info'>
-              <div class='fill-title' ref="fillTitle${index}">${backgroundTypeName}</div>
-              <div class='colorsteps' ref="colorsteps${index}">
-                ${this.getColorStepList(image)}
+          <div class="fill-item-container">
+            <div class='preview' data-index="${index}" ref="preview${index}">
+                <div class='mini-view' style="${imageCSS}" ref="miniView${index}"></div>
+            </div>
+            <div class='fill-info' title="Please drag to change order">
+              <div class='gradient-info'>
+                <div class='fill-title' ref="fillTitle${index}">${backgroundTypeName}</div>
+                <div class='colorsteps' ref="colorsteps${index}">
+                </div>
+                <div class='tools'>
+                  <button type="button" class='remove' data-index='${index}'>${icon.remove2}</button>
+                </div>
               </div>
-              <div class='tools'>
-                <button type="button" class='remove' data-index='${index}'>${
-        icon.remove2
-      }</button>
+              <div class='background-image-info'>
+                <div ref="size${index}">${it.width}/${it.height}</div>
+                <div ref="repeat${index}">${it.repeat}</div>
+                <div class='blend-mode' ref="blendMode${index}">${it.blendMode}</div>
               </div>
             </div>
-            <div class='background-image-info'>
-              <div ref="size${index}">${it.width}/${it.height}</div>
-              <div ref="repeat${index}">${it.repeat}</div>
-              <div class='blend-mode' ref="blendMode${index}">${
-        it.blendMode
-      }</div>
-            </div>
           </div>
+
       </div>
       `;
     });
@@ -252,16 +250,16 @@ export default class FillProperty extends BaseProperty {
     return data;
   }
 
-  notNeedColorPicker(e) {
-    var $el = new Dom(e.target);
-    const isPreview = $el.hasClass("preview");
-    const isStep = $el.hasClass("step");
-    return !isPreview && !isStep;
-  }
+  // notNeedColorPicker(e) {
+  //   var $el = new Dom(e.target);
+  //   const isPreview = $el.hasClass("preview");
+  //   const isStep = $el.hasClass("step");
+  //   return !isPreview && !isStep;
+  // }
 
-  [CLICK("$fillList") + IF("notNeedColorPicker")](e) {
-    this.emit("hideFillPicker");
-  }
+  // [CLICK("$fillList") + IF("notNeedColorPicker")](e) {
+  //   this.emit("hideFillPicker");
+  // }
 
   [CLICK("$fillList .colorsteps .step")](e) {
     var selectColorStepId = e.$delegateTarget.attr("data-colorstep-id");
@@ -269,31 +267,61 @@ export default class FillProperty extends BaseProperty {
     this.viewFillPicker($preview, selectColorStepId);
   }
 
-  [DRAGSTART("$fillList .fill-item")](e) {
-    this.startIndex = +e.$delegateTarget.attr("data-index");
-  }
-
-  // drop 이벤트를 걸 때 dragover 가 같이 선언되어 있어야 한다.
-  [DRAGOVER("$fillList .fill-item") + PREVENT](e) {}
-
-  [DROP("$fillList .fill-item") + PREVENT](e) {
-    var targetIndex = +e.$delegateTarget.attr("data-index");
+  [CLICK("$fillList .move-container [data-type]") + PREVENT](e) {
+    var startIndex = +e.$delegateTarget.closest("fill-item").attr('data-index');
+    var moveType = e.$delegateTarget.attr('data-type');
     var current = editor.selection.current;
-    if (!current) return;
+    var targetIndex = -1;
 
-    this.selectItem(this.startIndex, true);
-    current.sortBackgroundImage(this.startIndex, targetIndex);
+    if (moveType === 'up') {
+      targetIndex = startIndex - 1;
+      console.log(startIndex, targetIndex);
+      if (targetIndex < 0) {
+        return;
+      }
+
+    } else if (moveType === 'down') {
+      targetIndex = startIndex + 1;      
+
+      if (targetIndex >= current.backgroundImages.length) {
+        return;
+      }
+    }
+
+    current.sortBackgroundImage(startIndex, targetIndex);    
 
     this.emit("refreshCanvas");
-
+  
     this.refresh();
 
-    // startIndex 가 target 이랑 바뀌면
-    // startIndex 객체는 selected 르 true 로 설정하고
-    // refresh 될 때 selectedIndex 가 설정 되고
-    // viewFillPicker 를 호출할 $preview 가 필요하네 ?
-    this.viewFillPicker(this.getRef("preview", this.selectedIndex));
-  }
+    this.viewFillPicker(this.getRef("preview", targetIndex));
+  }  
+
+  // [DRAGSTART("$fillList .fill-item")](e) {
+  //   this.startIndex = +e.$delegateTarget.attr("data-index");
+  // }
+
+  // // drop 이벤트를 걸 때 dragover 가 같이 선언되어 있어야 한다.
+  // [DRAGOVER("$fillList .fill-item") + PREVENT](e) {}
+
+  // [DROP("$fillList .fill-item") + PREVENT](e) {
+  //   var targetIndex = +e.$delegateTarget.attr("data-index");
+  //   var current = editor.selection.current;
+  //   if (!current) return;
+
+  //   this.selectItem(this.startIndex, true);
+  //   current.sortBackgroundImage(this.startIndex, targetIndex);
+
+  //   this.emit("refreshCanvas");
+
+  //   this.refresh();
+
+  //   // startIndex 가 target 이랑 바뀌면
+  //   // startIndex 객체는 selected 르 true 로 설정하고
+  //   // refresh 될 때 selectedIndex 가 설정 되고
+  //   // viewFillPicker 를 호출할 $preview 가 필요하네 ?
+  //   this.viewFillPicker(this.getRef("preview", this.selectedIndex));
+  // }
 
   [CLICK("$fillList .tools .remove")](e) {
     var removeIndex = e.$delegateTarget.attr("data-index");
@@ -384,8 +412,8 @@ export default class FillProperty extends BaseProperty {
     // this.emit("hideFillPicker");
   }
 
-  [CLICK("$fillList .preview")](e) {
-    this.viewFillPicker(e.$delegateTarget);
+  [CLICK("$fillList .fill-item-container")](e) {
+    this.viewFillPicker(e.$delegateTarget.$('.preview'));
   }
 
   viewChangeImage(data) {
@@ -440,11 +468,6 @@ export default class FillProperty extends BaseProperty {
     var $el = this.getRef("fillTitle", this.selectedIndex);
     if ($el) {
       $el.html(names[data.type]);
-    }
-
-    var $el = this.getRef("colorsteps", this.selectedIndex);
-    if ($el) {
-      $el.html(this.getColorStepString(data.colorsteps));
     }
   }
 

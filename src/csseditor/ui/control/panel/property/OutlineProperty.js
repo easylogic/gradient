@@ -27,6 +27,10 @@ export default class OutlineProperty extends BaseProperty {
     this.refresh();
   }
 
+  getClassName() {
+    return "outline";
+  }
+
   getTemplateForOutlineProperty() {
     return html`
       <div class="property-item outline-item">

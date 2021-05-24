@@ -1,11 +1,76 @@
 .property {
-  padding: 0px;
-  border-bottom: 1px solid rgba($border-color, 0.5);
-  //   padding-bottom: 5px;
+  padding: 2px 0px;
+  // border-bottom: 1px solid rgba($border-color, 0.5);
+  background-color: rgb(65, 65, 65);
+  margin-bottom: 5px;
+  border-radius: 2px;
 
   &.gradients {
-    background-image: linear-gradient(89deg, white, #ffff0061);
+    background-image: linear-gradient(89deg, white, #fffb00);
   }
+
+  &.size {
+    background-color: #2196f3;
+  }
+
+  &.background-color {
+    background-color: #f44336;
+    color: black;
+    
+    .property-title {
+      color: black !important;
+      text-shadow: none;
+    }
+  }  
+
+  &.border-radius {
+    background-color: #9d65ff;
+    color: black;
+    
+    .property-title {
+      color: black !important;
+      text-shadow: none;
+    }
+  }  
+
+  &.border {
+    background-color: #ff9800;
+    color: black;
+    .property-title {
+      color: black !important;
+      text-shadow: none;
+    }
+  }  
+
+  &.border-image {
+    background-color: #00bcd4;
+    color: black;
+    .property-title {
+      color: black !important;
+      text-shadow: none;
+    }
+  }    
+
+  &.outline {
+    background-color: #cddc39;
+    color: black;
+    .property-title {
+      color: black !important;
+      text-shadow: none;
+    }
+  }    
+
+  &.filter {
+    background-color: #5265d0;
+    color: black;
+    .property-title {
+      color: black !important;
+      text-shadow: none;
+      grid-template-columns: 50px 1fr;
+    }
+  }    
+
+
 
   &.show {
     > .property-body {

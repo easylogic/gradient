@@ -145,7 +145,9 @@ export class ArtBoard extends GroupItem {
   }
 
   sortBackgroundImage(startIndex, targetIndex) {
-    this.sortItem(this.json.backgroundImages, startIndex, targetIndex);
+    const temp = this.json.backgroundImages[startIndex]
+    this.json.backgroundImages[startIndex] = this.json.backgroundImages[targetIndex]
+    this.json.backgroundImages[targetIndex] = temp;
   }
 
   getSelectedBackgroundIndex() {

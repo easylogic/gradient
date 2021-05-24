@@ -18,6 +18,10 @@ export default class BorderRadiusProperty extends BaseProperty {
     return "Radius";
   }
 
+  getClassName() {
+    return "border-radius";
+  }
+
   getBody() {
     return html`
       <div class="property-item border-radius-item">
