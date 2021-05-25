@@ -111,8 +111,6 @@ export default class FillProperty extends BaseProperty {
       const imageCSS = CSS_TO_STRING(it.toBackgroundImageCSS());
       const selectedClass = it.selected ? "selected" : "";
 
-      console.log(imageCSS);
-
       if (it.selected) {
         this.selectedIndex = index;
       }

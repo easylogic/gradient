@@ -242,8 +242,6 @@ export default class CanvasView extends UIElement {
     this.oldHeight = height.clone().value;    
 
     this.snapPoint = this.createSnapPointList()
-
-    console.log('===================');
   }
 
   moveDirection (dx, dy) {
@@ -403,8 +401,6 @@ export default class CanvasView extends UIElement {
 
     const { x, y, width: w, height: h } = editor.selection.current.selectedBackgroundImage;    
 
-    console.log(x, y, w, height);
-
     this.oldX = x.clone(); 
     this.oldY = y.clone(); 
     this.oldW = w.clone(); 
@@ -416,7 +412,6 @@ export default class CanvasView extends UIElement {
 
     this.snapPoint = this.createSnapPointList()    
 
-    console.log('===================fdsaffdsafdsafdsafdasfdfs');
   }
 
   checkSnapPoint(newX, newY, width, height) {
