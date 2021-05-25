@@ -256,7 +256,7 @@ export class Length {
 
   toPercent(maxValue, fontSize = 16) {
     if (this.isPercent()) {
-      return this.clone();
+      return Length.percent(this.value);
     } else if (this.isPx()) {
       return Length.percent((this.value * 100) / maxValue);
     } else if (this.isEm()) {
@@ -286,7 +286,7 @@ export class Length {
     if (this.isPercent()) {
       return Length.px((this.value / 100) * maxValue);
     } else if (this.isPx()) {
-      return this.clone();
+      return Length.px(this.value);
     } else if (this.isEm()) {
       return Length.px(((this.value / 100) * maxValue) / 16);
     } else if (this.isString()) {

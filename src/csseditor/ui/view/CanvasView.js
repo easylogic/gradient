@@ -204,17 +204,13 @@ export default class CanvasView extends UIElement {
     const pointList = []
     editor.selection.current.backgroundImages.filter(it => !it.selected).forEach(it => {
       const { x, y, width: w, height: h } = it;    
-      this.oldX = x.clone(); 
-      this.oldY = y.clone(); 
-      this.oldW = w.clone(); 
-      this.oldH = h.clone();               
 
       pointList.push(
-        {x: +this.oldX, y: +this.oldY},
-        {x: +this.oldX + +this.oldW, y: +this.oldY},
-        {x: +this.oldX + +this.oldW, y: +this.oldY + +this.oldH},
-        {x: +this.oldX, y: +this.oldY + +this.oldH},
-        {x: +this.oldX + +this.oldW/2, y: +this.oldY + +this.oldH/2},
+        {x: +x, y: +y},
+        {x: +x + +w, y: +y},
+        {x: +x + +w, y: +y + +h},
+        {x: +x, y: +y + +h},
+        {x: +x + +w/2, y: +y + +h/2},
       );
     });
 
@@ -235,7 +231,7 @@ export default class CanvasView extends UIElement {
     this.direction = e.$delegateTarget.attr('data-direction');
     this.selectedBackgroundImage = editor.selection.current.getSelectedBackgroundImage();   
     
-    const { x, y, width: w, height: h } = this.selectedBackgroundImage;    
+    const { x, y, width: w, height: h } = editor.selection.current.selectedBackgroundImage;
     this.oldX = x.clone(); 
     this.oldY = y.clone(); 
     this.oldW = w.clone(); 
@@ -246,6 +242,8 @@ export default class CanvasView extends UIElement {
     this.oldHeight = height.clone().value;    
 
     this.snapPoint = this.createSnapPointList()
+
+    console.log('===================');
   }
 
   moveDirection (dx, dy) {
@@ -403,7 +401,10 @@ export default class CanvasView extends UIElement {
     this.selectLayer(this.selectedIndex);
     this.emit('selectGradient');    
 
-    const { x, y, width: w, height: h } = this.selectedBackgroundImage;    
+    const { x, y, width: w, height: h } = editor.selection.current.selectedBackgroundImage;    
+
+    console.log(x, y, w, height);
+
     this.oldX = x.clone(); 
     this.oldY = y.clone(); 
     this.oldW = w.clone(); 
@@ -415,8 +416,7 @@ export default class CanvasView extends UIElement {
 
     this.snapPoint = this.createSnapPointList()    
 
-    console.log(this.snapPoint)
-
+    console.log('===================fdsaffdsafdsafdsafdasfdfs');
   }
 
   checkSnapPoint(newX, newY, width, height) {
@@ -440,7 +440,7 @@ export default class CanvasView extends UIElement {
     else if (checkedXList2.length) lastX = Length.px(checkedXList2[0].x - width.value/2).clone();
     else if (checkedXList3.length) lastX = Length.px(checkedXList3[0].x - width.value).clone();
 
-    console.log(checkedXList1,checkedXList2,checkedXList3, x, x2, centerX)
+    // console.log(checkedXList1,checkedXList2,checkedXList3, x, x2, centerX)
 
 
     let checkedYList1 = this.snapPoint.filter(it => (Math.abs(y.value - it.y) <= 3));
@@ -452,7 +452,7 @@ export default class CanvasView extends UIElement {
     else if (checkedYList2.length) lastY = Length.px(checkedYList2[0].y - height.value/2).clone();
     else if (checkedYList3.length) lastY = Length.px(checkedYList3[0].y - height.value).clone();    
 
-    console.log(lastX, lastY, width, height);
+    // console.log(lastX, lastY, width, height);
 
     return { x: lastX.clone(), y: lastY.clone(), width: width.clone(), height: height.clone()}
   }
@@ -465,7 +465,7 @@ export default class CanvasView extends UIElement {
 
     const {x, y, width, height} = this.checkSnapPoint(newX, newY, newW, newH);
 
-    this.selectedBackgroundImage.reset({x, y, width, height})
+    editor.selection.current.selectedBackgroundImage.reset({x, y, width, height})
 
     this.trigger('refreshCanvas');
     this.emit('refreshCanvas');

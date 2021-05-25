@@ -154,6 +154,10 @@ export class ArtBoard extends GroupItem {
     return this.backgroundImages.map((it, index) => [it.selected, index]).find(it => it[0])[1]
   }
 
+  get selectedBackgroundImage() {
+    return this.getSelectedBackgroundImage();
+  }
+
   getSelectedBackgroundImage() {
     return this.backgroundImages.find(it => it.selected);
   }  
