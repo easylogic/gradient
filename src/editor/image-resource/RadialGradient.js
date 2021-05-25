@@ -24,6 +24,14 @@ export class RadialGradient extends Gradient {
     return true;
   }
 
+  copy() {
+    return new RadialGradient({
+      radialType: this.json.radialType,
+      radialPosition: this.json.radialPosition,
+      colorsteps: this.copyColorSteps()
+    })
+  }
+
   toString() {
     var colorString = this.getColorString();
     var json = this.json;

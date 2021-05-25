@@ -12,6 +12,14 @@ export class StaticGradient extends Gradient {
         }) 
     }
 
+    copy() {
+        return new StaticGradient({
+          angle: this.json.angle,
+          colorsteps: this.copyColorSteps()
+        })
+    }
+    
+
     toString () {
         var color = this.json.colorsteps[0].color;
         return `linear-gradient(to right, ${color}, ${color})`

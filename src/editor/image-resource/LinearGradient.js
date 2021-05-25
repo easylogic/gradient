@@ -29,6 +29,13 @@ export class LinearGradient extends Gradient {
     return true;
   }
 
+  copy() {
+    return new LinearGradient({
+      angle: this.json.angle,
+      colorsteps: this.copyColorSteps()
+    })
+  }
+
   toString() {
     var colorString = this.getColorString();
 

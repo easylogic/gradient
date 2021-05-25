@@ -159,6 +159,10 @@ export class Gradient extends ImageResource {
     return this.json.colorsteps.filter(c => c.id == id)[0];
   }
 
+  copyColorSteps() {
+    return this.json.colorsteps.map(it => it.copy());
+  }
+
   clear(...args) {
     if (args.length) {
       this.json.colorsteps.splice(+args[0], 1);

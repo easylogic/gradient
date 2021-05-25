@@ -117,7 +117,21 @@ export class BackgroundImage extends Property {
       image: new StaticGradient()
     });
   }
-
+  
+  toJSON() {
+    const {x, y, width, height, size, repeat, blendMode, checked, image} = this.json;
+    return {
+      x: x.clone(), 
+      y: y.clone(), 
+      width: width.clone(), 
+      height: height.clone(), 
+      size, 
+      repeat, 
+      blendMode, 
+      checked, 
+      image: image.copy()
+    }
+  }
   convert(json) {
     json.x = Length.parse(json.x);
     json.y = Length.parse(json.y);

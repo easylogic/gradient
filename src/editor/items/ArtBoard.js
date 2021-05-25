@@ -150,6 +150,26 @@ export class ArtBoard extends GroupItem {
     this.json.backgroundImages[targetIndex] = temp;
   }
 
+  copyBackgroundImage(index) {
+
+    const list = []
+
+    this.json.backgroundImages.forEach((it, i) => {
+      if (index === i) {
+        list.push(it);
+        list.push(new BackgroundImage({
+          checked: true,
+          parent: this.ref,
+          ...it.toJSON()
+        }))
+      } else {
+        list.push(it);
+      }
+    })
+
+    this.json.backgroundImages = list;
+  }  
+
   getSelectedBackgroundIndex() {
     return this.backgroundImages.map((it, index) => [it.selected, index]).find(it => it[0])[1]
   }

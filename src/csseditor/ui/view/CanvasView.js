@@ -7,6 +7,7 @@ import { ArtBoard } from "../../../editor/items/ArtBoard";
 import { BIND, CLICK, DOUBLECLICK, END, LOAD, MOVE, POINTERSTART, PREVENT, STOP } from "../../../util/Event";
 import { CHANGE_SELECTION } from "../../types/event";
 import { CSS_TO_STRING } from "../../../util/css/make";
+import icon from "../icon/icon";
 
 export default class CanvasView extends UIElement {
   afterRender() {
@@ -123,6 +124,9 @@ export default class CanvasView extends UIElement {
               <div class='preview' data-index="${index}">
                   <div class='mini-view' style="${imageCSS}"></div>
               </div>
+              <div class="tools">
+                <button type="button" class='copy'  data-index="${index}">${icon.add}</button>
+              </div>
             </div>
         </div>
       `;
@@ -147,7 +151,7 @@ export default class CanvasView extends UIElement {
     this.refs.$controlLayer.css(css);
   }
 
-  [CLICK('$gradientListView .fill-item')] (e) {
+  [CLICK('$gradientListView .fill-item .preview')] (e) {
     const index = +e.$delegateTarget.attr('data-index');
     editor.selection.current.selectBackgroundImage(index);
 
@@ -155,6 +159,16 @@ export default class CanvasView extends UIElement {
     this.emit('refreshCanvas');
     this.trigger('refreshCanvas');
   }
+
+  [CLICK('$gradientListView .fill-item .copy')] (e) {
+    const index = +e.$delegateTarget.attr('data-index');
+    editor.selection.current.copyBackgroundImage(index);
+    editor.selection.current.selectBackgroundImage(index);    
+
+    this.emit('selectGradient');    
+    this.emit('refreshCanvas');
+    this.trigger('refreshCanvas');
+  }  
 
   [CLICK('$controlLayer [data-direction]') + PREVENT + STOP] (e) {
 

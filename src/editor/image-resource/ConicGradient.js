@@ -72,6 +72,14 @@ export class ConicGradient extends Gradient {
       .join(",");
   }
 
+  copy() {
+    return new ConicGradient({
+      angle: this.json.angle,
+      radialPosition: this.json.radialPosition,
+      colorsteps: this.copyColorSteps()
+    })
+  }
+
   toString() {
     var colorString = this.getColorString();
 

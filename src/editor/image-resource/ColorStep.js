@@ -15,6 +15,13 @@ export class ColorStep extends Item {
     });
   }
 
+  copy () {
+    const {cut, percent, unit, px, em, color, prevColorStep} = this.json;
+    return new ColorStep({
+      cut, percent, unit, px, em, color, prevColorStep
+    })
+  }
+
   on() {
     this.json.cut = true;
   }
