@@ -103,7 +103,7 @@ export default class FillPicker extends UIElement {
 
     if (images) {
       this.refs.$imagePreview.attr("src", images[0]);
-      this.emit("changeFillPicker", { type: "image", images });
+      this.emit("changeFillPicker", { type: "image", images }, this.state.params);
     }
   }
 
