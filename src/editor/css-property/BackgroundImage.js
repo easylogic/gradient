@@ -60,10 +60,10 @@ export class BackgroundImage extends Property {
     // delete json.type;
 
     switch (data.type) {
-      case "static-gradient":
-        return new StaticGradient({ 
-          colorsteps 
-        });
+      // case "static-gradient":
+      //   return new StaticGradient({ 
+      //     colorsteps 
+      //   });
       case "linear-gradient":
         return new LinearGradient({ 
           colorsteps, 
@@ -114,7 +114,7 @@ export class BackgroundImage extends Property {
       height: Length.percent(100),
       x: Length.percent(0),
       y: Length.percent(0),
-      image: new StaticGradient()
+      image: new LinearGradient()
     });
   }
   

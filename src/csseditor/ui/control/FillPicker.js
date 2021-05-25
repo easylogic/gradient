@@ -9,7 +9,7 @@ import { editor } from "../../../editor/editor";
 import { CHANGE_SELECTION } from "../../types/event";
 
 const tabs = [
-  { type: "static-gradient", title: "Static Gradient" },
+  // { type: "static-gradient", title: "Static Gradient" },
   { type: "linear-gradient", title: "Linear Gradient" },
   { type: "repeating-linear-gradient", title: "Repeating Linear Gradient" },
   { type: "radial-gradient", title: "Radial Gradient" },
@@ -50,7 +50,7 @@ export default class FillPicker extends UIElement {
     return html`
       <div class="fill-picker">
         <div class="picker-tab">
-          <div class="picker-tab-list" ref="$tab" data-value="static-gradient">
+          <div class="picker-tab-list" ref="$tab" data-value="linear-gradient">
             ${tabs.map(it => {
               return /*html*/`
                 <span 

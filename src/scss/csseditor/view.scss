@@ -14,6 +14,16 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
   pointer-events: all;
   overflow: auto;
 
+  .helper-tools {
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 5px 10px;
+    background-color: rgb(160, 160, 160);
+    border-bottom-left-radius: 5px;
+  }
+
   .page-canvas {
     position: relative;
     width: 500px;
@@ -156,6 +166,36 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
       top: 0px;
       right: 0px;
       bottom: 0px;
+
+      &[data-show-rotate-tool="true"] {
+        .control-point {
+          &[data-direction="rotate"],
+          &[data-direction="bottom-right-rotate"],
+          &[data-direction="bottom-left-rotate"],
+          &[data-direction="top-right-rotate"],
+          &[data-direction="top-left-rotate"]
+           {
+            display: inline-block;
+          }          
+        }
+      }
+
+
+      &[data-show-scale-tool="true"] {
+        .control-point {
+          &[data-direction="bottom-right"],
+          &[data-direction="bottom-left"],
+          &[data-direction="top-right"],
+          &[data-direction="top-left"],
+          &[data-direction="height-top"],
+          &[data-direction="height"],
+          &[data-direction="width-left"],
+          &[data-direction="width"]
+          {
+            display: inline-block;
+          }          
+        }
+      }      
     }
 
     .control-point {
@@ -167,6 +207,44 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
       box-sizing: border-box;
       pointer-events: all;
       transform: translate(-50%, -50%);
+
+
+      &[data-direction="rotate"] {
+        display: none;
+        top: 50%;
+        left: 50%;
+        width: 15%;
+        height: 15%;
+        border: 1px solid black; 
+        background-color: transparent;
+        border-radius: 100%;
+        position: absolute;
+        pointer-events: none;
+        filter: drop-shadow(0 0 2px rgba(255, 255, 255, 1));
+        &:before {
+          left: 50%;
+          top: 10px;
+          transform: translateX(-1.5px);
+          content: "";
+          display: inline-block;
+          position: absolute;
+          width: 2px;
+          bottom: 50%;
+          background-color: black;
+        }
+        &:after {
+          left: 50%;
+          top: 0%;
+          transform: translateX(-50%);
+          content: "";
+          display: inline-block;
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+          background-color: black;
+        }
+      }
 
       &[data-direction="top"] {
         top: 0%;
@@ -187,37 +265,90 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
       &[data-direction="bottom-right"] {
         top: 100%;
         left: 100%;
-        cursor: row-resize;
         width: 10px;
         height: 10px;
         cursor: nwse-resize;
+        display: none;
+
       }      
 
       &[data-direction="bottom-left"] {
         top: 100%;
         left: 0%;
-        cursor: row-resize;
         width: 10px;
         height: 10px;
         cursor: nesw-resize;
+        display: none;        
       }      
+
+      &[data-direction="top-left-rotate"] {
+        top: 0%;
+        left: 0%;
+        cursor: row-resize;
+        width: 20px;
+        height: 20px;
+        transform: translateX(-80%) translateY(-80%);
+        background-color: yellow;
+        border:1px solid black;
+        border-radius: 100%;
+        display: none;
+      }            
+
+      &[data-direction="bottom-left-rotate"] {
+        top: 100%;
+        left: 0%;
+        cursor: row-resize;
+        width: 20px;
+        height: 20px;
+        transform: translateX(-80%) translateY(-20%);
+        background-color: yellow;
+        border:1px solid black;        
+        border-radius: 100%;
+        display: none;        
+      }  
+      
+      &[data-direction="top-right-rotate"] {
+        top: 0%;
+        left: 100%;
+        cursor: row-resize;
+        width: 20px;
+        height: 20px;
+        transform: translateX(-20%) translateY(-80%);
+        background-color: yellow;
+        border:1px solid black;        
+        border-radius: 100%;
+        display: none;        
+      }            
+
+      &[data-direction="bottom-right-rotate"] {
+        top: 100%;
+        left: 100%;
+        cursor: row-resize;
+        width: 20px;
+        height: 20px;
+        transform: translateX(-20%) translateY(-20%);
+        background-color: yellow;
+        border:1px solid black;        
+        border-radius: 100%;
+        display: none;        
+      }        
 
       &[data-direction="top-right"] {
         top: 0%;
         left: 100%;
-        cursor: row-resize;
         width: 10px;
         height: 10px;
         cursor: nesw-resize;
+        display: none;        
       }      
 
       &[data-direction="top-left"] {
         top: 0%;
         left: 0%;
-        cursor: row-resize;
         width: 10px;
         height: 10px;
         cursor: nwse-resize;
+        display: none;        
       }      
 
 
@@ -245,6 +376,7 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
         background-color: white;
         background-image: linear-gradient(to right, red, black);
         cursor: w-resize;
+        display: none;        
       }
 
       &[data-direction="height"] {
@@ -254,6 +386,7 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
         background-color: white;
         background-image: linear-gradient(to bottom, red, black);
         cursor: n-resize;
+        display: none;        
       }      
 
       &[data-direction="height-top"] {
@@ -263,6 +396,7 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
         background-color: white;
         background-image: linear-gradient(to bottom, red, black);
         cursor: s-resize;
+        display: none;
       }      
 
       &[data-direction="width-left"] {
@@ -272,6 +406,7 @@ $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
         background-color: white;
         background-image: linear-gradient(to right, red, black);
         cursor: e-resize;
+        display: none;        
       }            
     }
   }  

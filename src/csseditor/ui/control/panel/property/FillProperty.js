@@ -24,17 +24,17 @@ const names = {
   static: "Static",
   "static-gradient": "Static",
   linear: "Linear",
-  "repeating-linear": `${icon.repeat} Linear`,
+  "repeating-linear": `Repeating Linear`,
   radial: "Radial",
-  "repeating-radial": `${icon.repeat} Radial`,
+  "repeating-radial": `Repeating Radial`,
   conic: "Conic",
-  "repeating-conic": `${icon.repeat} Conic`,
+  "repeating-conic": `Repeating Conic`,
   "linear-gradient": "Linear",
-  "repeating-linear-gradient": `${icon.repeat} Linear`,
+  "repeating-linear-gradient": `Repeating Linear`,
   "radial-gradient": "Radial",
-  "repeating-radial-gradient": `${icon.repeat} Radial`,
+  "repeating-radial-gradient": `Repeating Radial`,
   "conic-gradient": "Conic",
-  "repeating-conic-gradient": `${icon.repeat} Conic`
+  "repeating-conic-gradient": `Repeating Conic`
 };
 
 const types = {
@@ -128,8 +128,6 @@ export default class FillProperty extends BaseProperty {
             <div class='fill-info' title="Please drag to change order">
               <div class='gradient-info'>
                 <div class='fill-title' ref="fillTitle${index}">${backgroundTypeName}</div>
-                <div class='colorsteps' ref="colorsteps${index}">
-                </div>
                 <div class='tools'>
                   <button type="button" class='remove' data-index='${index}'>${icon.remove2}</button>
                 </div>

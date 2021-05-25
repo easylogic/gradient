@@ -465,6 +465,18 @@ export default class VerticalColorStep extends UIElement {
     this.emit("selectColorStep", this.currentColorStep.color);
   }
 
+  selectColorStep(index) {
+
+    this.currentColorStep = this.colorsteps[index];
+    this.colorsteps.forEach(step => {
+      step.selected = step.id === this.currentColorStep.id;
+    });
+
+    this.setColorUI();
+
+    this.emit("selectColorStep", this.currentColorStep.color);
+  }  
+
   getRadialType() {
     var shape = this.refs.$circle.hasClass("selected") ? "circle" : "ellipse";
     var extent = this.refs.$selectRadialExtent.value;
@@ -528,6 +540,14 @@ export default class VerticalColorStep extends UIElement {
       this.updateColorStep();
     }
   }
+
+  [CLICK("$colorList .guide-step")](e) {
+    var index = +e.$delegateTarget.attr("data-index");
+
+    this.selectColorStep(index);
+  }
+
+
 
   [CHANGE("$colorList .guide-unit select.unit")](e) {
     var unit = e.$delegateTarget.val();

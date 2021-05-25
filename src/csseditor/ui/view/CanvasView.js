@@ -5,9 +5,9 @@ import { Length } from "../../../editor/unit/Length";
 import { Project } from "../../../editor/items/Project";
 import { ArtBoard } from "../../../editor/items/ArtBoard";
 import { BIND, CLICK, DOUBLECLICK, END, LOAD, MOVE, POINTERSTART, PREVENT, STOP } from "../../../util/Event";
-import { CHANGE_SELECTION } from "../../types/event";
 import { CSS_TO_STRING } from "../../../util/css/make";
 import icon from "../icon/icon";
+import { calculateAngle } from "../../../util/functions/math";
 
 export default class CanvasView extends UIElement {
   afterRender() {
@@ -18,17 +18,38 @@ export default class CanvasView extends UIElement {
 
     this[EVENT("refreshCanvas")]();
   }
+
+  initState() {
+    return {
+      showRotateTool: true,
+      showScaleTool: true,
+    }
+  }
+
   template() {
     return /*html*/`
             <div class='page-view'>
                 <div class="page-canvas" ref="$canvas"></div>         
+                <div class="helper-tools">
+                  <label><button type="button" ref="$toCenter">To Center</button></label>
+                  <label><input type="checkbox" ${this.state.showRotateTool? 'checked': ''} ref="$showRotateTool"/>Rotate</label>
+                  <label><input type="checkbox" ${this.state.showScaleTool? 'checked': ''} ref="$showScaleTool"/>Scale</label>
+                </div>
                 <div class="gradient-control" ref="$control"></div>       
                 <div class="gradient-transform" ref="$transform">
-                  <div class="control-layer" ref="$controlLayer">
+                  <div class="control-layer" 
+                      ref="$controlLayer" 
+                      data-show-rotate-tool="${this.state.showRotateTool}"
+                      data-show-scale-tool="${this.state.showScaleTool}"
+                  >
+                    <div class="control-point" data-direction="bottom-right-rotate"></div>
+                    <div class="control-point" data-direction="bottom-left-rotate"></div>
+                    <div class="control-point" data-direction="top-right-rotate"></div>
+                    <div class="control-point" data-direction="top-left-rotate"></div>
                     <div class="control-point" data-direction="top"></div>
                     <div class="control-point" data-direction="right"></div>
                     <div class="control-point" data-direction="left"></div>
-                    <div class="control-point" data-direction="bottom"></div>                  
+                    <div class="control-point" data-direction="bottom"></div>                                      
                     <div class="control-point" data-direction="bottom-right"></div>   
                     <div class="control-point" data-direction="bottom-left"></div>    
                     <div class="control-point" data-direction="top-right"></div>   
@@ -36,7 +57,8 @@ export default class CanvasView extends UIElement {
                     <div class="control-point" data-direction="width"></div>
                     <div class="control-point" data-direction="height"></div>
                     <div class="control-point" data-direction="width-left"></div>
-                    <div class="control-point" data-direction="height-top"></div>                    
+                    <div class="control-point" data-direction="height-top"></div>  
+                    <div class="control-point" data-direction="rotate" ref="$rotate"></div>
                   </div>
 
                 </div>
@@ -51,6 +73,22 @@ export default class CanvasView extends UIElement {
 
             </div>
         `;
+  }
+
+  [CLICK('$showRotateTool')] () {
+    this.setState({
+      showRotateTool: this.refs.$showRotateTool.checked()
+    }, false)
+
+    this.refs.$controlLayer.attr('data-show-rotate-tool', this.refs.$showRotateTool.checked())
+  }
+
+  [CLICK('$showScaleTool')] () {
+    this.setState({
+      showScaleTool: this.refs.$showScaleTool.checked()
+    }, false)
+
+    this.refs.$controlLayer.attr('data-show-scale-tool', this.refs.$showScaleTool.checked())    
   }
 
   [CLICK('$add')] () {
@@ -84,6 +122,14 @@ export default class CanvasView extends UIElement {
         width: Length.px(rect.width),
         height: Length.px(rect.height),
       });      
+
+      const image = current.selectedBackgroundImage?.image;
+
+      if (typeof image?.angle !== 'undefined') {
+        this.refs.$rotate.css({
+          transform: `translateX(-50%) translateY(-50%) rotate(${image.angle}deg)`
+        })
+      }
 
       this.load('$control');
       this.updateControlLayer();
@@ -204,7 +250,8 @@ export default class CanvasView extends UIElement {
       })
         
       break;
-    default: return; 
+    default: 
+      return; 
     }
 
 
@@ -245,17 +292,27 @@ export default class CanvasView extends UIElement {
     this.direction = e.$delegateTarget.attr('data-direction');
     this.selectedBackgroundImage = editor.selection.current.getSelectedBackgroundImage();   
     
-    const { x, y, width: w, height: h } = editor.selection.current.selectedBackgroundImage;
+    const { x, y, width: w, height: h, image } = editor.selection.current.selectedBackgroundImage;
     this.oldX = x.clone(); 
     this.oldY = y.clone(); 
     this.oldW = w.clone(); 
-    this.oldH = h.clone();         
+    this.oldH = h.clone(); 
+  
+    if (typeof image.angle != 'undefined') {
+      this.angle = Length.deg(image.angle)
+    } else {
+      this.angle = undefined;
+    }
+
 
     const {width, height} = editor.selection.current;
     this.oldWidth = width.clone().value;
     this.oldHeight = height.clone().value;    
 
     this.snapPoint = this.createSnapPointList()
+
+    this.rect = this.refs.$controlLayer.rect()
+    this.centerXY = {x: this.rect.left + this.rect.width/2, y: this.rect.top + this.rect.height/2 }
   }
 
   moveDirection (dx, dy) {
@@ -268,6 +325,18 @@ export default class CanvasView extends UIElement {
     const rate = this.oldH/this.oldW
 
     switch(this.direction) {
+    case 'top': 
+
+    if (dy > newH.value) {
+      const newDy = dy - newH.value;
+      newY = newY.add(newH.value).clone().floor();    
+      newH = newH.set(Math.abs(newDy)).clone().floor();        
+    } else {
+      newY = newY.add(dy).clone().floor();    
+      newH = newH.add(-dy).clone().floor();
+    }
+
+    break;       
     case 'right': 
       if (newW.value + dx < 0) {
         const newDx = newW.value + dx; 
@@ -346,18 +415,58 @@ export default class CanvasView extends UIElement {
       newY = Length.px(centerY - (newH/2))
 
       break;       
-    case 'top': 
 
-      if (dy > newH.value) {
-        const newDy = dy - newH.value;
-        newY = newY.add(newH.value).clone().floor();    
-        newH = newH.set(Math.abs(newDy)).clone().floor();        
-      } else {
-        newY = newY.add(dy).clone().floor();    
-        newH = newH.add(-dy).clone().floor();
+    case 'top-right-rotate':
+    case 'bottom-right-rotate':
+    case 'top-left-rotate':
+    case 'bottom-left-rotate':                        
+
+      if (this.angle) {
+
+        let startXY = { x: this.rect.width + this.rect.x , y : this.rect.height + this.rect.y }
+
+        switch(this.direction) {
+        case "bottom-right-rotate": 
+          startXY = { x: this.rect.width + this.rect.x , y : this.rect.height + this.rect.y }
+          break;
+        case "top-right-rotate": 
+          startXY = { x: this.rect.width + this.rect.x , y : this.rect.y }
+          break;
+        case "bottom-left-rotate": 
+          startXY = { x: this.rect.x , y : this.rect.height + this.rect.y }
+          break;
+        case "top-left-rotate": 
+          startXY = { x: this.rect.x , y : this.rect.y }
+          break;
+        }
+
+        const centerXY = {x: this.rect.left + this.rect.width/2, y: this.rect.top + this.rect.height/2 }      
+  
+        const rx = startXY.x - centerXY.x
+        const ry = startXY.y - centerXY.y
+        const angle = calculateAngle(rx, ry);
+  
+        const rx2 = startXY.x + dx - centerXY.x
+        const ry2 = startXY.y + dy - centerXY.y
+        const angle2 = calculateAngle(rx2, ry2);      
+  
+        const lastAngle = angle2 - angle;
+
+        const nextAngle = this.angle.value + lastAngle;
+
+
+        this.selectedBackgroundImage.image.reset({
+          angle: nextAngle
+        })
+
+        this.trigger('refreshCanvas');
+        this.emit('refreshCanvas');
       }
 
-      break; 
+      
+
+      return;
+
     }
 
     const {x, y, width, height} = this.snapBackgroundImage(newX, newY, newW, newH);
@@ -376,6 +485,10 @@ export default class CanvasView extends UIElement {
 
   moveEndDirection() {
     this.emit('selectGradient');
+  }
+
+  [CLICK('$toCenter')] (e) {
+    this[DOUBLECLICK('$control .gradient-layer')].call(this);
   }
 
   [DOUBLECLICK('$control .gradient-layer')] (e) {
@@ -492,6 +605,16 @@ export default class CanvasView extends UIElement {
   }
 
   [EVENT("selectGradient")] () {
+    
+    const selectedBackgroundImage = editor.selection.current.selectedBackgroundImage;
+    const angle = selectedBackgroundImage?.image?.angle;
+
+    if (typeof angle === 'undefined') {
+      this.refs.$rotate.toggle(false);
+    } else {
+      this.refs.$rotate.toggle(true);
+    }
+
     this.load("$control");
     this.updateControlLayer();
   }

@@ -138,6 +138,7 @@ $sub-editor-size: 70px;
           border:1px solid #ececec;
           box-sizing: border-box;
           position: relative;
+          cursor: pointer;
 
           @include transparent-background(12px);
 

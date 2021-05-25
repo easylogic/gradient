@@ -1,6 +1,7 @@
 import { Gradient } from "./Gradient";
 import { EMPTY_STRING } from "../../util/css/types";
 import { isNumber } from "../../util/functions/func";
+import { ColorStep } from "./ColorStep";
 
 const DEFINED_DIRECTIONS = {
   "0": "to top",
@@ -18,6 +19,15 @@ export class LinearGradient extends Gradient {
     return super.getDefaultObject({
       type: "linear-gradient",
       angle: 0,
+      colorsteps: [
+        new ColorStep({
+          color: "yellow",
+          percent: 0,
+          index: 0,
+          selected: true
+        }),
+        new ColorStep({ color: "red", percent: 100, index: 1 })
+      ],
       ...obj
     });
   }

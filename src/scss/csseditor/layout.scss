@@ -7,7 +7,7 @@ $pointer-color: rgba(#ececec, 0.8);
 $gutter: 8px;
 $tool-size: 50px;
 $top-size: 100px;
-$left-size: 260px;
+$left-size: 300px;
 $left-layer-panel: 70px;
 $left-page-size: 70px;
 $toggle-left-size: 80px;
@@ -31,18 +31,6 @@ $display-grid-color: red;
   flex-direction: column;
   background-color: $background-color;
 
-  &.show-timeline {
-    .layout-footer {
-      height: $timeline-size - 1px;
-    }
-  }
-
-  &:not(.show-timeline) {
-    .layout-footer {
-      height: $timeline-header-size - 1px !important;
-    }
-  }
-
   .layout-header {
     flex: none;
     height: $tool-size;
@@ -61,10 +49,10 @@ $display-grid-color: red;
 
   .layout-footer {
     position: absolute;
-    left: $left-size + $right-size;
+    width: 400px;
     right: 0px;
     bottom: 0px;
-    height: $footer-size;
+    top: 50px;
     overflow: hidden;
     border-top: 1px solid $border-color;
     // background-color: yellow;
@@ -113,7 +101,7 @@ $display-grid-color: red;
       left: $left-size;
       width: $right-size;
       right: 0px;
-      top: -$top-size + 60;
+      top: 0px;
       bottom: 10px;
       border-left: 1px solid $border-color;
       border-right: 1px solid $border-color;
@@ -143,11 +131,13 @@ $display-grid-color: red;
 
     .layout-body {
       position: absolute;
-      left: $left-size + $right-size;
+      left: $left-size + $right-size + 4px;
       top: 0px;
-      right: 0px;
-      bottom: $footer-size;
+      right: 404px;
+      bottom: 10px;
       pointer-events: none;
+      border-radius: 4px;
+      overflow: hidden;
     }
   }
 }
