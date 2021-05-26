@@ -5,9 +5,13 @@ import Download from "./Download";
 import Save from "./Save";
 import GradientList from "./GradientList";
 import Initialize from "./Initialize";
+import ExportGradient from "./ExportGradient";
+import LoadGradient from "./LoadGradient";
 
 
 export default {
+  LoadGradient,
+  ExportGradient,
   Initialize,
   GradientList,
   ExportJSFiddle,

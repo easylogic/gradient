@@ -591,6 +591,10 @@ export default class Dom {
     return this;
   }
 
+  click() {
+    this.el.click();
+  }
+
   focus() {
     this.el.focus();
 

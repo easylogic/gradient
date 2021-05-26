@@ -18,8 +18,11 @@ export default class GradientListView extends UIElement {
       const list = editor.load();
       list.reverse();
       return list.map(it => {
-          return /*html*/`<div class='gradient-list-item' data-id="${it.id}">
-              <div class="preview" style="${it.preview}"></div>
+          return /*html*/`<div class='gradient-list-item'>
+              <div class="preview" data-id="${it.id}" style="${it.preview}"></div>
+              <div class="tools">
+                <button type="button" class="export" data-id="${it.id}">export</button>
+              </div>
           </div>`
       })
   }
@@ -52,7 +55,7 @@ export default class GradientListView extends UIElement {
       this.refresh();
   }
 
-  [CLICK('$container .gradient-list-item') + STOP] (e) {
+  [CLICK('$container .gradient-list-item .preview') + STOP] (e) {
       const id = e.$delegateTarget.attr('data-id');
       const data = editor.load().find(it => it.id === id);
 
@@ -64,4 +67,25 @@ export default class GradientListView extends UIElement {
       }
 
   }
+
+  [CLICK('$container .gradient-list-item .export') + STOP] (e) {
+    const id = e.$delegateTarget.attr('data-id');
+    const data = editor.load().find(it => it.id === id);
+
+    if (data) {
+
+      const blob = new Blob([JSON.stringify(data, null, 4)],{type:'application/json'});
+
+      var a = new FileReader();
+      a.onload = function(e) {
+          var link = document.createElement('a');
+          link.download = "easylogic-gradient.json";
+          link.style.opacity = "0";
+          link.href = e.target.result;
+          link.click();
+      }
+      a.readAsDataURL(blob);
+    }
+
+}
 }

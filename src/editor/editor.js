@@ -310,10 +310,7 @@ export const editor = new class {
     return JSON.parse(window.localStorage.getItem("easylogic.gradient.list") || "[]")
   }
 
-  save() {
-
-    const list = this.load();
-
+  export () {
     const result = {
       id: uuid(),
       json: editor.selection.current.toJSON(),
@@ -321,7 +318,14 @@ export const editor = new class {
       preview: editor.selection.current.toString()
     }
 
-    list.push(result);
+    return result; 
+  }
+
+  save() {
+
+    const list = this.load();
+
+    list.push(this.export());
 
     window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(list));
     
