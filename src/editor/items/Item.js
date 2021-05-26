@@ -2,7 +2,8 @@ import { uuidShort, uuid } from "../../util/functions/math";
 import {
   isFunction,
   isUndefined,
-  isNotUndefined
+  isNotUndefined,
+  clone
 } from "../../util/functions/func";
 import { editor } from "../editor";
 
@@ -60,6 +61,16 @@ export class Item {
    */
   isAttribute() {
     return false;
+  }
+
+  attrs (...keys) {
+    const obj = {};
+
+    keys.filter(key => isNotUndefined(this.json[key])).forEach(key => {
+      obj[key] = clone(this.json[key])
+    })
+
+    return obj;
   }
 
   /***********************************

@@ -9,7 +9,8 @@ import { BackgroundImage } from "../css-property/BackgroundImage";
 import {
   keyEach,
   combineKeyArray,
-  isUndefined
+  isUndefined,
+  clone
 } from "../../util/functions/func";
 
 const borderRadiusCssKey = {
@@ -42,6 +43,25 @@ export class ArtBoard extends GroupItem {
       display: Display.parse({ display: "block" }),
       ...obj
     });
+  }
+
+  init () {
+    this.reset(clone(this.getDefaultObject()))
+  }
+
+  toJSON() {
+    return this.attrs(
+      'itemType',
+      'width',
+      'height',
+      'backgroundColor',
+      'filters',
+      'border',
+      'borderRadius',
+      'outline',
+      'borderImage',
+      'backgroundImages',
+    )
   }
 
   getArtBoard() {
@@ -130,6 +150,8 @@ export class ArtBoard extends GroupItem {
 
   removeBackgroundImage(removeIndex) {
     this.json.backgroundImages.splice(removeIndex, 1);
+
+    this.selectBackgroundImage(removeIndex);
   }
 
   removeBoxShadow(removeIndex) {
@@ -157,11 +179,7 @@ export class ArtBoard extends GroupItem {
     this.json.backgroundImages.forEach((it, i) => {
       if (index === i) {
         list.push(it);
-        list.push(new BackgroundImage({
-          checked: true,
-          parent: this.ref,
-          ...it.toJSON()
-        }))
+        list.push(new BackgroundImage(it.toJSON()));
       } else {
         list.push(it);
       }
@@ -171,7 +189,9 @@ export class ArtBoard extends GroupItem {
   }  
 
   getSelectedBackgroundIndex() {
-    return this.backgroundImages.map((it, index) => [it.selected, index]).find(it => it[0])[1]
+    const test = this.backgroundImages.map((it, index) => [it.selected, index]).find(it => it[0]);
+
+    return test?.[1]
   }
 
   get selectedBackgroundImage() {
@@ -318,8 +338,8 @@ export class ArtBoard extends GroupItem {
 
   toSizeCSS() {
     return {
-      width: this.json.width,
-      height: this.json.height
+      width: this.json.width + "",
+      height: this.json.height + ""
     };
   }
 
@@ -391,7 +411,7 @@ export class ArtBoard extends GroupItem {
     }
 
     results['border-image-source'] = new BackgroundImage().setGradient(borderImage.source).image.toString() ;
-    results['border-image-slice'] = borderImage.slice;
+    results['border-image-slice'] = borderImage.slice + "";
     results['border-image-width'] = borderImage.width;
     results['border-image-outset'] = borderImage.outset;
     results['border-image-repeat'] = borderImage.repeat;

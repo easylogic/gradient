@@ -12,6 +12,9 @@ import FillPicker from "../ui/control/FillPicker";
 import ColorPicker from "../ui/control/ColorPicker";
 import ExportWindow from "../ui/window/ExportWindow";
 import popup from "../ui/control/popup";
+import GradientListView from "../ui/view/GradientListView";
+
+
 
 export default class CSSEditor extends UIElement {
   template() {
@@ -19,8 +22,8 @@ export default class CSSEditor extends UIElement {
             <div class="layout-main -show-timeline" ref="$layoutMain">
                 <div class="layout-header">
                     <div class="page-tab-menu">
-                    <ToolMenu />
-                  </div>
+                      <ToolMenu />
+                    </div>
                 </div>
                 <div class="layout-middle">
                     <div class="layout-left">
@@ -52,7 +55,13 @@ export default class CSSEditor extends UIElement {
                     </script>
                   </div>                                                    
                 </div>
+                <div class="layout-feature">
+                  <SavePanel />
+                </div>
 
+                <div class="layout-screen">
+                  <GradientListView />
+                </div>
             </div>
   
         `;
@@ -62,6 +71,7 @@ export default class CSSEditor extends UIElement {
     return {
       ...popup,
       FillPicker,
+      GradientListView,
       ColorPicker,
       Inspector,
       ToolMenu,

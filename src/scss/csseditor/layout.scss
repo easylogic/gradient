@@ -12,7 +12,8 @@ $left-layer-panel: 70px;
 $left-page-size: 70px;
 $toggle-left-size: 80px;
 $right-size: 260px;
-$footer-size: 300px;
+$footer-size: 250px;
+$feature-size: 0px;
 $timeline-header-size: 300px;
 $timeline-size: 300px;
 $show-timeline-animation: all 0.15s linear;
@@ -38,7 +39,7 @@ $display-grid-color: red;
     display: flex;
     position: relative;
     background-color: rgba(0, 0, 0, 1);
-    z-index: 1;
+    z-index: 100000;
 
     .page-tab-menu {
       flex: 1 1 auto;
@@ -49,7 +50,7 @@ $display-grid-color: red;
 
   .layout-footer {
     position: absolute;
-    width: 400px;
+    width: $footer-size;
     right: 0px;
     bottom: 0px;
     top: 50px;
@@ -66,6 +67,27 @@ $display-grid-color: red;
       height: 100px;
       color: white;
     }    
+  }
+
+  .layout-feature {
+    position: absolute;
+    width: $feature-size;
+    right: $footer-size + 4px;
+    bottom: 0px;
+    top: 50px;
+    overflow: hidden;
+    // background-color: yellow;
+  }
+
+
+  .layout-screen {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    z-index: 100;
+    pointer-events: none;
   }
 
   .layout-middle {
@@ -98,7 +120,7 @@ $display-grid-color: red;
     .layout-right {
       position: absolute;
       flex: none;
-      left: $left-size;
+      left: $left-size + 4px;
       width: $right-size;
       right: 0px;
       top: 0px;
@@ -131,9 +153,9 @@ $display-grid-color: red;
 
     .layout-body {
       position: absolute;
-      left: $left-size + $right-size + 4px;
+      left: $left-size + $right-size + 4px + 4px;
       top: 0px;
-      right: 404px;
+      right: $footer-size +  $feature-size + 4px;
       bottom: 10px;
       pointer-events: none;
       border-radius: 4px;
@@ -165,8 +187,10 @@ $display-grid-color: red;
 @import "./border-image.scss";
 @import "./outline.scss";
 @import "./size.scss";
+@import "./save.scss";
 @import "./box-shadow.scss";
 @import "./export-view.scss";
+@import "./gradient-list-view.scss";
 
 @import "./fill-picker.scss";
 @import "./popup.scss";

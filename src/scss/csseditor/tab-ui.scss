@@ -54,8 +54,11 @@ $tab-horizontal-header-right-width: 60px;
             padding: 6px 4px;
             cursor: pointer;
             color: black; 
-            border: 1px solid $tab-border-color;
+            // border: 1px solid $tab-border-color;
             min-width: 50px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
 
             &:not(.selected) {
                 background-color: $tab-background-color; 
@@ -63,7 +66,8 @@ $tab-horizontal-header-right-width: 60px;
             }
 
             &.selected {
-                background-color: $tab-selected-color;
+                // background-color: $tab-selected-color;
+                color: white;
             }
 
             &.small-font {
@@ -92,7 +96,7 @@ $tab-horizontal-header-right-width: 60px;
         right: 0px;
         top: $tab-header-height;
         bottom: 0px;
-        border: 1px solid $tab-border-color;
+        // border: 1px solid $tab-border-color;
 
         &.no-border {
             border:0px;

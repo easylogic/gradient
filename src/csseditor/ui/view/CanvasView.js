@@ -63,9 +63,7 @@ export default class CanvasView extends UIElement {
 
                 </div>
                 <div class="gradient-list-view">
-                  <div ref="$gradientListView">
-                  
-                  </div>
+                  <div ref="$gradientListView"></div>
                   <div class="add-button">
                     <button type="button" ref="$add"> + </button>
                   </div>
@@ -172,6 +170,7 @@ export default class CanvasView extends UIElement {
               </div>
               <div class="tools">
                 <button type="button" class='copy'  data-index="${index}">${icon.add}</button>
+                <button type="button" class='remove'  data-index="${index}">${icon.remove2}</button>
               </div>
             </div>
         </div>
@@ -215,6 +214,15 @@ export default class CanvasView extends UIElement {
     this.emit('refreshCanvas');
     this.trigger('refreshCanvas');
   }  
+
+  [CLICK('$gradientListView .fill-item .remove')] (e) {
+    const index = +e.$delegateTarget.attr('data-index');
+    editor.selection.current.removeBackgroundImage(index);
+
+    this.emit('selectGradient');    
+    this.emit('refreshCanvas');
+    this.trigger('refreshCanvas');
+  }    
 
   [CLICK('$controlLayer [data-direction]') + PREVENT + STOP] (e) {
 
@@ -452,8 +460,7 @@ export default class CanvasView extends UIElement {
   
         const lastAngle = angle2 - angle;
 
-        const nextAngle = this.angle.value + lastAngle;
-
+        let nextAngle = (this.angle.value + lastAngle);
 
         this.selectedBackgroundImage.image.reset({
           angle: nextAngle

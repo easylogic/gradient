@@ -216,12 +216,12 @@ export default class BackgroundPropertyPopup extends UIElement {
   [EVENT("showBackgroundPropertyPopup")](data) {
     this.data = { ...this.data, ...data };
 
-    if (this.data.x.isString()) {
-      this.data.x = this.data.x.toPercent();
+    if (this.data.x?.isString()) {
+      this.data.x = this.data.x?.toPercent();
     }
 
-    if (this.data.y.isString()) {
-      this.data.y = this.data.y.toPercent();
+    if (this.data.y?.isString()) {
+      this.data.y = this.data.y?.toPercent();
     }
 
     this.refreshUnitRange();

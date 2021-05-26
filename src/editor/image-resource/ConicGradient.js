@@ -1,6 +1,6 @@
 import { Gradient } from "./Gradient";
 import { EMPTY_STRING, WHITE_STRING } from "../../util/css/types";
-import { isNotUndefined } from "../../util/functions/func";
+import { isNotUndefined, isString } from "../../util/functions/func";
 import { ColorStep } from "./ColorStep";
 import { Length, Position } from "../unit/Length";
 
@@ -31,6 +31,30 @@ export class ConicGradient extends Gradient {
       radialPosition: [Position.CENTER, Position.CENTER],
       ...obj
     });
+  }
+
+  toJSON() {
+    return {
+      ...super.toJSON(),
+      ...this.attrs(
+        'angle',
+        'radialPosition'
+      )
+    }
+  }
+
+
+  convert(json) {
+
+    json = super.convert(json);
+
+    if (isString(json.radialPosition)) {
+      json.radialPosition = [json.radialPosition, json.radialPosition]
+    }
+
+    json.radialPosition = json.radialPosition?.map(it => Length.parse(it)) || [];
+
+    return json;
   }
 
   isConic() {
@@ -87,11 +111,13 @@ export class ConicGradient extends Gradient {
     var json = this.json;
 
     var conicAngle = json.angle;
-    var conicPosition = json.radialPosition || Position.CENTER;
+    var conicPosition = json.radialPosition || [Position.CENTER, Position.CENTER];
+
+    // console.log(conicPosition)
 
     conicPosition = DEFINED_POSITIONS[conicPosition]
       ? conicPosition
-      : conicPosition.join(WHITE_STRING);
+      : conicPosition;
 
     if (isNotUndefined(conicAngle)) {
       conicAngle = +(DEFINED_ANGLES[conicAngle] || conicAngle);
@@ -99,7 +125,7 @@ export class ConicGradient extends Gradient {
     }
 
     if (conicPosition) {
-      opt.push(`at ${conicPosition}`);
+      opt.push(`at ${conicPosition.join(' ')}`);
     }
 
     var optString = opt.length ? opt.join(WHITE_STRING) + "," : EMPTY_STRING;

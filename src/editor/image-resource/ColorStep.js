@@ -1,7 +1,7 @@
 import { Item } from "../items/Item";
 import { Length } from "../unit/Length";
-import Color from "../../util/Color";
 import { EMPTY_STRING } from "../../util/css/types";
+import Color from "../../util/Color";
 export class ColorStep extends Item {
   getDefaultObject() {
     return super.getDefaultObject({
@@ -11,6 +11,7 @@ export class ColorStep extends Item {
       px: 0,
       em: 0,
       color: "rgba(0, 0, 0, 0)",
+      selected: false,
       prevColorStep: null
     });
   }
@@ -20,6 +21,22 @@ export class ColorStep extends Item {
     return new ColorStep({
       cut, percent, unit, px, em, color, prevColorStep
     })
+  }
+
+  toJSON() {
+    return this.attrs(
+      'color',
+      'cut',
+      'em',
+      'index',
+      'lock',
+      'percent',
+      'prevColorStep',
+      'px',
+      'selected',
+      'unit',
+      'visible'
+    )
   }
 
   on() {
@@ -192,6 +209,125 @@ export class ColorStep extends Item {
 
     ColorStep.sort(colorsteps);
   }
+
+  static randomColor (colorsteps) {
+    colorsteps.forEach((it, index) => {
+      it.color = Color.randomRGBA()
+    })    
+  }
+
+  static random (colorsteps) {
+    colorsteps.forEach((it, index) => {
+      it.color = Color.random()
+    })    
+  }  
+
+  static shuffle (colorsteps) {
+    const colors = colorsteps.map(it => it.color)
+
+    colors.sort(()=> Math.random() - 0.5);
+
+    colorsteps.forEach((it, index) => {
+      it.color = colors[index];
+    })    
+  }    
+
+  static moveRight (colorsteps) {
+    const colors = colorsteps.map(it => it.color)
+    const length = colors.length; 
+
+    colorsteps.forEach((it, index) => {
+      let targetIndex = index - 1; 
+      if (targetIndex < 0) {
+        targetIndex += length;
+      }
+
+      it.color = colors[targetIndex % length];
+    })
+  }
+
+  static moveLeft (colorsteps) {
+    const colors = colorsteps.map(it => it.color)
+    const length = colors.length; 
+
+    colorsteps.forEach((it, index) => {
+      const targetIndex = index+1;
+      it.color = colors[targetIndex % length];
+    })
+  }  
+
+  static reverse (colorsteps) {
+    const colors = colorsteps.map(it => it.color)
+    const length = colors.length; 
+
+    colorsteps.forEach((it, index) => {
+      const targetIndex = length - index -1;
+      it.color = colors[targetIndex % length];
+    })
+  }    
+
+  static space (colorsteps) {
+    const length = colorsteps.length; 
+    const unitPercent = 100 / (length - 1); 
+
+    colorsteps.forEach((it, index) => {
+      it.percent = index * unitPercent;
+      it.unit = '%'
+    })
+  }
+  
+  static round (colorsteps) {
+    const length = colorsteps.length; 
+    const unitPercent = 100 / (length + 1); 
+
+    colorsteps.forEach((it, index) => {
+      it.percent = (index + 1) * unitPercent;
+      it.unit = '%'
+    })
+  }  
+
+  static roundLeft (colorsteps) {
+    const length = colorsteps.length; 
+    const unitPercent = 100 / length; 
+
+    colorsteps.forEach((it, index) => {
+      it.percent = index * unitPercent;
+      it.unit = '%'
+    })
+  }    
+
+  static roundRight (colorsteps) {
+    const length = colorsteps.length; 
+    const unitPercent = 100 / length; 
+
+    colorsteps.forEach((it, index) => {
+      it.percent = (index + 1) * unitPercent;
+      it.unit = '%'
+    })
+  }      
+
+  static roundRightRepeat (colorsteps) {
+    const length = colorsteps.length; 
+    const offset = 50;
+    const unitPercent = 50 / length; 
+
+    colorsteps.forEach((it, index) => {
+      it.percent = offset + (index * unitPercent);
+      it.unit = '%'
+    })
+  }        
+
+  static roundLeftRepeat (colorsteps) {
+    const length = colorsteps.length; 
+    const unitPercent = 50 / length; 
+
+    colorsteps.forEach((it, index) => {
+      it.percent = (index+1) * unitPercent;
+      it.unit = '%'
+    })
+  }          
+
+
 
   static sort(colorsteps) {
     colorsteps.sort((a, b) => {

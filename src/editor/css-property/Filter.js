@@ -15,6 +15,16 @@ export class Filter extends Property {
   toString() {
     return `${this.json.type}(${this.json.value || ""})`;
   }
+
+  toJSON() {
+    return this.attrs(
+      'itemType',
+      'lock',
+      'type',
+      'value',
+      'visible'
+    )
+  }
 }
 
 export class BlurFilter extends Filter {

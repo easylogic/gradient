@@ -161,7 +161,7 @@ export class Length {
       }
     }
 
-    return Length.string(obj);
+    return Length.string(obj.value || obj);
   }
   toString() {
     if (this.isCalc()) {

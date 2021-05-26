@@ -62,6 +62,7 @@ export default class BackgroundColorProperty extends BaseProperty {
       left: rect.left + 90,
       top: rect.top
     });
+    this.emit("hideBackgroundPropertyPopup");    
   }
 
   [INPUT("$backgroundColor .color-code input")](e) {

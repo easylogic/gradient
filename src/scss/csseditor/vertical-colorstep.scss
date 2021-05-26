@@ -9,6 +9,27 @@ $sub-editor-size: 70px;
   overflow: auto;
   position: relative;
 
+  .sort-tools {
+    pointer-events: all;
+    box-sizing: border-box;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-top: 4px;
+
+    button {
+      background-color: transparent;
+      border: 1px solid #ececec;
+      padding: 2px 0px;
+
+      &:hover {
+        background-color: #ececec;
+      }
+    }
+  }
+
   .gradient-editor {
     position: relative;
     display: block;
@@ -130,7 +151,7 @@ $sub-editor-size: 70px;
       
       .color-list-item {
         display: grid;
-        grid-template-columns: 20px 20px 1fr;
+        grid-template-columns: 20px 20px 1fr 16px;
         grid-column-gap: 2px;
         margin-bottom: 2px;
 
@@ -209,6 +230,23 @@ $sub-editor-size: 70px;
             height: 18px;
             outline: none;
             box-sizing: border-box;
+          }
+        }
+
+        .guide-tools {
+          text-align: right;
+          button {
+            padding: 0px;
+            background-color: transparent;
+            border:0px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+
+            svg  {
+              width: 100%;
+              height: 100%;
+            }
           }
         }
 

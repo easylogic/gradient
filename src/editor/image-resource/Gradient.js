@@ -40,6 +40,16 @@ export class Gradient extends ImageResource {
     });
   }
 
+  toJSON() {
+    return this.attrs(
+      'itemType',
+      'type',
+      'lock',
+      'visible',
+      'colorsteps'
+    )
+  }
+
   convert(json) {
     json.colorsteps = json.colorsteps.map(c => new ColorStep(c));
 
@@ -137,6 +147,7 @@ export class Gradient extends ImageResource {
       it.index = index * 100;
     });
   }
+
 
   /**
    * add ColorStep List

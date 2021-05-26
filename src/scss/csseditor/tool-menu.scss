@@ -49,6 +49,8 @@
 
     &.left {
       text-align: left;
+      display: grid;
+      grid-template-columns: 270px 1fr;
     }
 
     &.right {
@@ -221,6 +223,44 @@
           content: "D";
         }
       }      
+    }
+  }
+}
+
+
+.gradient-list {
+  display: inline-block;
+  grid-template-columns: repeat(5, 1fr);
+  vertical-align: middle;
+
+  > * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .gradient-list-item {
+    display: inline-block;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    margin-right: 5px;
+
+    &:hover {
+      z-index: 100;      
+      .preview {
+        // width: auto !important;
+        // height: auto !important;
+        transform: scale(1.5);
+        outline: 1px solid #ececec;
+      }
+
+    }
+
+    .preview {
+      width: 100% !important;
+      height: 100% !important;
+      cursor: pointer;
     }
   }
 }

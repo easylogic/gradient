@@ -25,6 +25,7 @@ import PredefinedLinearGradientAngle from "./shape/PredefinedLinearGradientAngle
 import GradientAngle from "./shape/GradientAngle";
 import PredefinedRadialGradientPosition from "./shape/PredefinedRadialGradientPosition";
 import GradientPosition from "./shape/GradientPosition";
+import icon from "../icon/icon";
 
 const staticGradientString = "static-gradient";
 /**
@@ -58,6 +59,20 @@ export default class VerticalColorStep extends UIElement {
   template() {
     return /*html*/`
             <div class='vertical-colorstep-container'>
+                <div class="sort-tools">
+                  <button type="button" ref="$left" title="move left"><-</button>                
+                  <button type="button" ref="$right" title="move right">-></button>
+                  <button type="button" ref="$reverse" title="reverse"><-></button>
+                  <button type="button" ref="$shuffle" title="shuffle">.o.</button>
+                  <button type="button" ref="$space" title="space">O--O</button>
+                  <button type="button" ref="$round" title="round">-OO-</button>
+                  <button type="button" ref="$roundLeft" title="round left">O-</button>
+                  <button type="button" ref="$roundLeftRepeat" title="round left for repeat">OO-</button>
+                  <button type="button" ref="$roundRight" title="round right">-O</button>
+                  <button type="button" ref="$roundRightRepeat" title="round right for repeat">-OO</button>
+                  <button type="button" ref="$random" title="change random rgb color">R</button>
+                  <button type="button" ref="$randomColor" title="change random rgb color with alpha">RA</button>
+                </div>
                 <div class='vertical-colorstep' ref="$verticalColorstep">
                     <div class='gradient-steps'>
                         <div class="hue-container" ref="$back"></div>            
@@ -95,6 +110,78 @@ export default class VerticalColorStep extends UIElement {
             </div>
         `;
   }
+
+  [CLICK('$shuffle')] () {
+    ColorStep.shuffle(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }
+
+  [CLICK('$space')] () {
+    ColorStep.space(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }  
+
+  [CLICK('$randomColor')] () {
+    ColorStep.randomColor(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }  
+
+  [CLICK('$random')] () {
+    ColorStep.random(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }    
+
+  [CLICK('$round')] () {
+    ColorStep.round(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }
+  
+  [CLICK('$roundLeft')] () {
+    ColorStep.roundLeft(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }
+  
+  [CLICK('$roundRight')] () {
+    ColorStep.roundRight(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }  
+
+  [CLICK('$roundLeftRepeat')] () {
+    ColorStep.roundLeftRepeat(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }
+  
+  [CLICK('$roundRightRepeat')] () {
+    ColorStep.roundRightRepeat(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }    
+
+  [CLICK('$reverse')] () {
+    ColorStep.reverse(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }  
+
+  [CLICK('$right')] () {
+    ColorStep.moveRight(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }
+
+  [CLICK('$left')] () {
+    ColorStep.moveLeft(this.colorsteps);
+    this.setColorUI();
+    this.updateColorStep();
+  }  
 
   setColorSteps(colorsteps = []) {
     this.colorsteps = colorsteps;
@@ -176,6 +263,8 @@ export default class VerticalColorStep extends UIElement {
     // 반복 패턴을 어떻게 하면 filter 같은걸 안쓰고 한번에 처리 할 수 있을까?
     ColorStep.select(this.colorsteps, opt.selectColorStepId);
     this.currentColorStep = this.colorsteps.filter(step => step.selected)[0];
+
+    if (!this.currentColorStep) return;
     this.emit("selectColorStep", this.currentColorStep.color);
 
     this.gradientType = opt.type;
@@ -247,7 +336,7 @@ export default class VerticalColorStep extends UIElement {
     this.updateColorStep();
   }
 
-  [EVENT("hideGradientEditor", CHANGE_EDITOR, CHANGE_SELECTION)]() {
+  [EVENT("hideGradientEditor", "hideBackgroundPropertyPopup", CHANGE_EDITOR, CHANGE_SELECTION)]() {
     this.$el.hide();
   }
 
@@ -335,6 +424,9 @@ export default class VerticalColorStep extends UIElement {
                     }" data-index="${index}"  />
                     ${this.getUnitSelect(step)}
                 </div>       
+                <div class='guide-tools'>
+                  <button type="button" class="remove">${icon.remove}</button>
+                </div>
             </div>
         `;
     });
@@ -448,6 +540,9 @@ export default class VerticalColorStep extends UIElement {
   }
 
   selectStep(e) {
+
+    if (!this.currentColorStep) return;
+
     var parent = e.$delegateTarget.parent();
     this.currentStepBox = this.currentStepBox || parent;
     var $selected = this.refs.$stepList.$(".selected");
@@ -468,6 +563,9 @@ export default class VerticalColorStep extends UIElement {
   selectColorStep(index) {
 
     this.currentColorStep = this.colorsteps[index];
+
+    if (!this.currentColorStep) return;    
+
     this.colorsteps.forEach(step => {
       step.selected = step.id === this.currentColorStep.id;
     });
@@ -638,6 +736,8 @@ export default class VerticalColorStep extends UIElement {
     this.currentStep = e.$delegateTarget;
     const index = +this.currentStep.attr("data-index");
     this.currentColorStep = this.colorsteps[index];
+    if (!this.currentColorStep) return;
+
     this.currentStepBox =  this.currentStep.parent();
     
     const $colorListItem = this.refs.$colorList.$(`[data-step-index="${index}"]`);

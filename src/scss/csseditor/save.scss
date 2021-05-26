@@ -1,0 +1,26 @@
+.save-item {
+  padding: 10px 2px;
+  margin-top: 5px;
+  display: block !important;
+
+
+  .save-list-item {
+    height: 150px;
+    position: relative;
+
+    .preview-container {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      bottom :0px;
+      right: 0px;
+
+      .preview {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}

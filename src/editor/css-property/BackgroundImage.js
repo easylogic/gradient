@@ -119,18 +119,18 @@ export class BackgroundImage extends Property {
   }
   
   toJSON() {
-    const {x, y, width, height, size, repeat, blendMode, checked, image} = this.json;
-    return {
-      x: x.clone(), 
-      y: y.clone(), 
-      width: width.clone(), 
-      height: height.clone(), 
-      size, 
-      repeat, 
-      blendMode, 
-      checked, 
-      image: image.copy()
-    }
+    return this.attrs(
+      'x',
+      'y',
+      'width',
+      'height',
+      'size',
+      'repeat', 
+      'blendMode',
+      'checked',
+      'image',
+      'selected'
+    )
   }
   convert(json) {
     json.x = Length.parse(json.x);
@@ -138,6 +138,14 @@ export class BackgroundImage extends Property {
 
     if (json.width) json.width = Length.parse(json.width);
     if (json.height) json.height = Length.parse(json.height);
+
+    if (json.image) {
+      if (json.image.type === 'image') {
+        json.image = this.createImage(json.image.url);
+      } else {
+        json.image = this.createGradient(json.image);
+      }
+    }
 
     return json;
   }

@@ -216,6 +216,9 @@ export default class FillProperty extends BaseProperty {
 
 
   getFillData(backgroundImage) {
+
+    if (!backgroundImage) return {}
+
     let data = {
       type: backgroundImage.type
     };
@@ -341,7 +344,7 @@ export default class FillProperty extends BaseProperty {
     this.refs.$fillList.$$(".selected").forEach(it => it.removeClass("selected"))
 
     if (isSelected) {
-      this.refs[`fillIndex${selectedIndex}`].addClass("selected");
+      this.refs[`fillIndex${selectedIndex}`]?.addClass("selected");
     }
 
     if (this.current) {
@@ -379,7 +382,7 @@ export default class FillProperty extends BaseProperty {
     if (!this.current) return;
     this.currentBackgroundImage = this.current.getSelectedBackgroundImage();
 
-    const back = this.currentBackgroundImage;
+    const back = this.currentBackgroundImage || {};
 
     const x = back.x;
     const y = back.y;

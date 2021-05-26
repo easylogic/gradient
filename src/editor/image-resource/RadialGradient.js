@@ -20,8 +20,27 @@ export class RadialGradient extends Gradient {
     });
   }
 
+  toJSON() {
+    return {
+      ...super.toJSON(),
+      ...this.attrs(
+        'radialType',
+        'radialPosition'
+      )
+    }
+  }
+
   isRadial() {
     return true;
+  }
+
+  convert(json) {
+
+    json = super.convert(json);
+
+    json.radialPosition = json.radialPosition?.map(it => Length.parse(it)) || [];
+
+    return json;
   }
 
   copy() {

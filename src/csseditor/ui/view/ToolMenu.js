@@ -7,12 +7,17 @@ export default class ToolMenu extends UIElement {
   }
 
   template() {
-    return `
+    return /*html*/`
             <div class='tool-menu'>
                 <div class='items left'>
                   <div class='logo'>
                     <div class='text'>Gradient Editor</div>
                     <div class='site'>easylogic.studio</div>
+                  </div>
+                  <div class="menus">
+                    <Initialize />
+                    <Save />                    
+                    <GradientList />
                   </div>
                 </div>
                 <div class='items  right'>

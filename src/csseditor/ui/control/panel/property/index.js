@@ -29,13 +29,14 @@ import SizeProperty from "./SizeProperty";
 import BoxShadowProperty from "./BoxShadowProperty";
 import OutlineProperty from "./OutlineProperty";
 import BorderImageProperty from "./BorderImageProperty";
+import SaveProperty from "./SaveProperty";
 // import PositionProperty from "./PositionProperty";
 
 
 
 export default {
   // PositionProperty,
-
+  SaveProperty,
   BorderImageProperty,
   OutlineProperty,
   BoxShadowProperty,

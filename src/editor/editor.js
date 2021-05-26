@@ -1,10 +1,11 @@
 import { Config } from "./Config";
 import { Selection } from "./Selection";
-import { uuidShort } from "../util/functions/math";
+import { uuid, uuidShort } from "../util/functions/math";
 
 const items = new Map();
 const linkedItems = new Map();
 const urlList = new Map();
+const LOCAL_STORAGE_KEY = "easylogic.gradient.list";
 
 function blobToDataURL(blob) {
   return new Promise(function(resolve) {
@@ -303,5 +304,26 @@ export const editor = new class {
     if (urlList.delete(url)) {
       URL.revokeObjectURL(url);
     }
+  }
+
+  load () {
+    return JSON.parse(window.localStorage.getItem("easylogic.gradient.list") || "[]")
+  }
+
+  save() {
+
+    const list = this.load();
+
+    const result = {
+      id: uuid(),
+      json: editor.selection.current.toJSON(),
+      css: editor.selection.current.toCSS(),
+      preview: editor.selection.current.toString()
+    }
+
+    list.push(result);
+
+    window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(list));
+    
   }
 }();
