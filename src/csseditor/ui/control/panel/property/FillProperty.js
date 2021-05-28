@@ -376,7 +376,7 @@ export default class FillProperty extends BaseProperty {
     this.emit("selectGradient");
   }
 
-  viewBackgroundPropertyPopup(position) {
+  viewBackgroundPropertyPopup() {
     this.current = editor.selection.current;
 
     if (!this.current) return;
@@ -397,7 +397,6 @@ export default class FillProperty extends BaseProperty {
 
     this.emit("showBackgroundPropertyPopup", {
       image,
-      position,
       x,
       y,
       width,
@@ -530,5 +529,9 @@ export default class FillProperty extends BaseProperty {
         this.refreshBackgroundPropertyInfo(this.currentBackgroundImage, data);
       }
     }
+  }
+
+  [EVENT('refreshCanvas')] () {
+    this.viewBackgroundPropertyPopup();
   }
 }

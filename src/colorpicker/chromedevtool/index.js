@@ -8,6 +8,7 @@ import Palette from "../ui/ColorPalette";
 import ColorSetsChooser from "../ui/ColorSetsChooser";
 import CurrentColorSets from "../ui/CurrentColorSets";
 import ContextMenu from "../ui/CurrentColorSetsContextMenu";
+import HueScale from "../ui/control/HueScale";
 
 export default class ChromeDevToolColorPicker extends BaseColorPicker {
   template() {
@@ -15,6 +16,7 @@ export default class ChromeDevToolColorPicker extends BaseColorPicker {
             <Palette />
             <div class="control">
                 <Hue />
+                <HueScale />
                 <Opacity />
                 <div class="empty"></div>
                 <ColorView />
@@ -29,6 +31,7 @@ export default class ChromeDevToolColorPicker extends BaseColorPicker {
   components() {
     return {
       Hue,
+      HueScale,
       Opacity,
       ColorView,
       Palette,

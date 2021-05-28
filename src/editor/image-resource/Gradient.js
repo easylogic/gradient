@@ -1,6 +1,6 @@
 import { ImageResource } from "./ImageResource";
 import { ColorStep } from "./ColorStep";
-import { EMPTY_STRING } from "../../util/css/types";
+import { color, EMPTY_STRING } from "../../util/css/types";
 import { isUndefined } from "../../util/functions/func";
 import Color from "../../util/Color";
 
@@ -51,6 +51,8 @@ export class Gradient extends ImageResource {
   }
 
   convert(json) {
+    json = super.convert(json);
+
     json.colorsteps = json.colorsteps.map(c => new ColorStep(c));
 
     return json;

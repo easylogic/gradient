@@ -476,7 +476,11 @@ export default class CanvasView extends UIElement {
 
     }
 
-    const {x, y, width, height} = this.snapBackgroundImage(newX, newY, newW, newH);
+    let {x, y, width, height} = this.snapBackgroundImage(newX, newY, newW, newH);
+    
+
+    width = width.to(this.oldW.unit, this.oldWidth);
+    height = height.to(this.oldH.unit, this.oldHeight);        
 
     this.selectedBackgroundImage.reset({ x, y, width, height})
 
@@ -592,7 +596,10 @@ export default class CanvasView extends UIElement {
     const newW = this.oldW.toPx(this.oldWidth).floor();
     const newH = this.oldH.toPx(this.oldHeight).floor();
 
-    const {x, y, width, height} = this.checkSnapPoint(newX, newY, newW, newH);
+    let {x, y, width, height} = this.checkSnapPoint(newX, newY, newW, newH);
+
+    width = width.to(this.oldW.unit, this.oldWidth);
+    height = height.to(this.oldH.unit, this.oldHeight);        
 
     editor.selection.current.selectedBackgroundImage.reset({x, y, width, height})
 

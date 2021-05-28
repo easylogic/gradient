@@ -33,6 +33,9 @@ export function randomRGBA() {
 }
 
 export function round (n, k) {
+
+    if (n === 0) return 0;
+
     k = isUndefined(k) ? 1 : k; 
     return Math.round(n * k) / k;
 }
