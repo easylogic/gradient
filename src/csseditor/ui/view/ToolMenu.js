@@ -18,11 +18,11 @@ export default class ToolMenu extends UIElement {
                     <Initialize />
                     <Save />                    
                     <GradientList />
+                    <ExportGradient />
+                    <LoadGradient />
                   </div>
                 </div>
                 <div class='items  right'>
-                    <ExportCodePen />
-                    <ExportJSFiddle />
                     <Github />
                     <Download />
                 </div>                

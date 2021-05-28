@@ -264,3 +264,18 @@
     }
   }
 }
+
+.load-gradient {
+  display: inline-block;
+  vertical-align: middle;
+
+  label {
+    color: white;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+}

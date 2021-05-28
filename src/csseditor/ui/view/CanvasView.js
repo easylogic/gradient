@@ -624,9 +624,10 @@ export default class CanvasView extends UIElement {
     const angle = selectedBackgroundImage?.image?.angle;
 
     if (typeof angle === 'undefined') {
-      this.refs.$rotate.toggle(false);
+      this.refs.$rotate.hide();
     } else {
-      this.refs.$rotate.toggle(true);
+      console.log(angle);
+      this.refs.$rotate.show('inline-block');
     }
 
     this.load("$control");

@@ -91,6 +91,14 @@ export class ArtBoard extends GroupItem {
 
     if (json.display) json.display = Display.parse(json.display);
 
+    if (json.outline) {
+      json.outline.width = Length.parse(json.outline.width);
+    }
+
+    if (json.borderImage) {
+      json.borderImage.slice = Length.parse(json.borderImage.slice);
+    }
+
     return json;
   }
 
