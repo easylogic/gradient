@@ -230,8 +230,16 @@
           .color-list {
             padding-right: 10px !important;
 
+            .current-color-sets{
+              display: grid;
+              grid-template-columns: repeat(8, 1fr);
+              grid-column-gap: 10px;
+              grid-row-gap: 10px;
+            }
+
             .color-item {
-              margin-right: 8px !important;
+              margin-right: 0px !important;
+              margin-bottom: 0px !important;
             }
           }
         }

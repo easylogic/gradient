@@ -30,6 +30,9 @@ export default class FillPicker extends UIElement {
       position: "inline",
       container: this.refs.$color.el,
       color: defaultColor,
+      localStorage: {
+        prefix: 'easylogic.gradient.colorpicker'
+      },
       onChange: c => {
         this.changeColor(c);
       }
