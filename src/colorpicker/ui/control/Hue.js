@@ -26,13 +26,15 @@ export default class Hue extends BaseSlider {
 
         var dist = this.getCalculatedDist(e);
      
-        this.setColorUI(dist/100 * this.maxValue);
+        const isDifferent = this.setColorUI(dist/100 * this.maxValue);
 
-        this.changeColor({
-            h: (dist/100) * this.maxValue,
-            type: 'hsv'
-        })
+        if (isDifferent !== true) {
+            this.changeColor({
+                h: (dist/100) * this.maxValue,
+                type: 'hsv'
+            })            
+        }
+
     }     
-
 
 }

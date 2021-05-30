@@ -4,14 +4,14 @@ $editor-button-color: #5f80de;
 $editor-line-color: rgba($editor-button-color, 0.3);
 $editor-resizer-width: 8px;
 $editor-canvas-background-color: rgba(236, 236, 236, 0.3);
-$gradient-size: 50px;
+$gradient-size: 80px;
 .page-view {
   position: absolute;
   left: 0px;
   right: 0px;
   bottom: 0px;
   top: 0px;
-  background-color: $border-color;
+  background-color: #ececec;
   pointer-events: all;
   overflow: auto;
 
@@ -118,6 +118,7 @@ $gradient-size: 50px;
       .preview {
         display: grid;
         cursor: pointer;
+        @include transparent-background();        
 
         .mini-view {
           display: block;

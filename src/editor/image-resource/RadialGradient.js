@@ -1,6 +1,7 @@
 import { Gradient } from "./Gradient";
 import { EMPTY_STRING, WHITE_STRING } from "../../util/css/types";
 import { Length, Position } from "../unit/Length";
+import { isString } from "../../util/functions/func";
 
 const DEFINED_POSITIONS = {
   ["center"]: true,
@@ -37,6 +38,11 @@ export class RadialGradient extends Gradient {
   convert(json) {
 
     json = super.convert(json);
+
+
+    if (isString(json.radialPosition)) {
+      json.radialPosition = [json.radialPosition, json.radialPosition]
+    }
 
     json.radialPosition = json.radialPosition?.map(it => Length.parse(it)) || [];
 

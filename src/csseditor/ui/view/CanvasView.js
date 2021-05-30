@@ -162,7 +162,7 @@ export default class CanvasView extends UIElement {
       const imageCSS = CSS_TO_STRING(it.toBackgroundImageCSS());
       const selectedClass = it.selected ? "selected" : "";
 
-      return `
+      return /*html*/`
         <div class='fill-item ${selectedClass}' data-index='${index}'>
             <div class="fill-item-container">
               <div class='preview' data-index="${index}">
@@ -187,7 +187,18 @@ export default class CanvasView extends UIElement {
       return;
     }
 
-    const { width, height, x, y, size} = image; 
+    let { width, height, x, y, size} = image; 
+    const {width: w, height: h} = editor.selection.current;
+
+    // x, y 가  percent 일 때는 offset 계산 공식을 적용한다. 
+    if (x.isPercent()) {
+      x = Length.px((w.value - width.toPx(w).value) * (x.value/100))
+    }
+
+    if (y.isPercent()) {
+      y = Length.px((h.value - height.toPx(w).value) * (y.value/100))
+    }    
+
     const css = size === 'auto' ? { width, height, left: x, top: y} : {};
 
     if (this.refs.$controlLayer.css('display') === 'none') {
@@ -477,7 +488,22 @@ export default class CanvasView extends UIElement {
     }
 
     let {x, y, width, height} = this.snapBackgroundImage(newX, newY, newW, newH);
-    
+
+    if (this.oldX.isPercent()) {
+      x = Length.percent(x.value / (this.oldWidth - width.value))
+      if (x.value < 0) x.value = 0;
+    } else {
+      x = x.to(this.oldW.unit, this.oldWidth);
+    }
+
+    if (this.oldY.isPercent()) {
+      y = Length.percent(y.value / (this.oldHeight - height.value))      
+      if (y.value < 0) y.value = 0;      
+    } else {
+      y = y.to(this.oldH.unit, this.oldHeight);
+    }
+
+
 
     width = width.to(this.oldW.unit, this.oldWidth);
     height = height.to(this.oldH.unit, this.oldHeight);        
@@ -597,6 +623,12 @@ export default class CanvasView extends UIElement {
     const newH = this.oldH.toPx(this.oldHeight).floor();
 
     let {x, y, width, height} = this.checkSnapPoint(newX, newY, newW, newH);
+
+    x = x.to(this.oldW.unit, this.oldWidth);
+    y = y.to(this.oldH.unit, this.oldHeight);
+
+    if (x.value < 0) x.value = 0;
+    if (y.value < 0) y.value = 0;
 
     width = width.to(this.oldW.unit, this.oldWidth);
     height = height.to(this.oldH.unit, this.oldHeight);        

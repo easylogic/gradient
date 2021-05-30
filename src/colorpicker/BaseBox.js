@@ -17,7 +17,7 @@ export default class BaseBox extends UIElement {
   }
 
   [POINTERMOVE("document")](e) {
-    this.onDragMove(e);
+      this.onDragMove(e);
   }
 
   [POINTERSTART("$bar")](e) {

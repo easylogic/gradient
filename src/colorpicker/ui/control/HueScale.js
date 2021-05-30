@@ -8,6 +8,7 @@ export default class HueScale extends BaseSlider {
         super.initialize()
         this.minValue = 0
         this.maxValue = 360
+        this.hueScaleDist = 0.05;
     }
 
     template () {
@@ -37,12 +38,16 @@ export default class HueScale extends BaseSlider {
 
         var dist = this.getCalculatedDist(e);
      
-        this.setColorUI(dist/100);
+        const isDifferent = this.setColorUI(dist/100);
 
-        this.changeColor({
-            h: (this.minValue + this.fullDist * (dist/100)) * 360,
-            type: 'hsv'
-        })
+        // hue 가 변경되지 않은 상태면 changeColor 를 하지 않는다. 
+        if (isDifferent !== true) {
+            this.changeColor({
+                h: (this.minValue + this.fullDist * (dist/100)) * 360,
+                type: 'hsv'
+            })
+        }
+
     }     
 
     setColorUI(v) {
@@ -50,11 +55,34 @@ export default class HueScale extends BaseSlider {
 
         if (v) {
             p =  this.minValue + v * this.fullDist; 
+
+            if (this.lastP === p) return true;
+
+            this.lastP = p; 
         } else {
 
             p = (this.getDefaultValue() / 360);
 
-            const list = HueColor.getHueScale(p, 0.05);
+            if (this.lastP === p) return true;
+
+            this.lastP = p;                     
+
+            let maxP = p + 0.05;
+            let minP = p - 0.05; 
+
+            if (maxP > 1) {
+                const dist = maxP - 1
+                maxP = 1;
+                minP = 1 - this.hueScaleDist * 2;
+            } else if (minP < 0) {
+                const dist = Math.abs(minP);
+                minP = 0;
+                maxP = maxP + dist;
+            }
+
+            const list = HueColor.getHueScale(p, minP, maxP);
+
+            // console.log(list, p, minP, maxP);
 
             this.list = list;
 
@@ -82,8 +110,10 @@ export default class HueScale extends BaseSlider {
         }
 
         if (p <= this.minValue) {
+            p = this.minValue;
             this.refs.$bar.addClass('first').removeClass('last')
         } else if (p >= this.maxValue) {
+            p = this.maxValue;
             this.refs.$bar.addClass('last').removeClass('first')
         } else {
             this.refs.$bar.removeClass('last').removeClass('first')

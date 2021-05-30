@@ -732,6 +732,12 @@ export default class VerticalColorStep extends UIElement {
   }
 
   [POINTERSTART("$steps .step") + PREVENT + MOVE() + END()](e) {
+
+    if (e.shiftKey) {
+      this.removeStep(e);
+      return false;
+    }
+
     this.xy = e.xy;
     this.currentStep = e.$delegateTarget;
     const index = +this.currentStep.attr("data-index");

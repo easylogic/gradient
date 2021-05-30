@@ -1,5 +1,6 @@
 import Color from './Color';
 import { rgb } from './functions/formatter';
+import { isUndefined } from './functions/func';
 
 const hue_color = [
     { rgb : '#ff0000', start : .0 },
@@ -31,9 +32,10 @@ function checkHueColor(p) {
     return hue_color[0].rgb;
 }
 
-function getHueScale(p, scale = 0.1) {
-    const start = p - scale;
-    const end = p + scale; 
+function getHueScale(p, minScale = 0.1, maxScale) {
+
+    const start = isUndefined(maxScale) ? p - minScale : minScale;
+    const end = isUndefined(maxScale) ? p + scale : maxScale; 
 
     const list = []
 
