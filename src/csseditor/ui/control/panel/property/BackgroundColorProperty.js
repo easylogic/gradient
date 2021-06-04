@@ -20,71 +20,13 @@ export default class BackgroundColorProperty extends BaseProperty {
   }
 
   getBody() {
-    return `
-            <div class='property-item background-color' ref='$backgroundColor'></div>
-        `;
-  }
+    var current = editor.selection.current || {backgroundColor: 'white'};
 
-  [LOAD("$backgroundColor")]() {
-    var current = editor.selection.current;
-
-    if (!current) return EMPTY_STRING;
-
-    var it = current;
-    var imageCSS = `background-color: ${it.backgroundColor}`;
-    return `
-            <div class='fill-item'>
-                <div class='preview'>
-                    <div class='mini-view' style="${imageCSS}" ref='$miniView'></div>
-                </div>
-                <div class='color-code'>
-                    <input type="text" ref='$colorCode' />
-                </div>
+    return /*html*/`
+            <div class='property-item background-color'>
+              <ColorViewEditor ref='$color' key='background-color' value="${current.backgroundColor}" onchange="changeColor" />
             </div>
         `;
-  }
-
-  [CLICK("$el .preview")](e) {
-    this.viewColorPicker(e.$delegateTarget);
-  }
-
-  viewColorPicker($preview) {
-    var current = editor.selection.current;
-
-    if (!current) return;
-
-    var rect = $preview.rect();
-
-    this.emit("hidePropertyPopup");
-    this.emit("showColorPicker", {
-      changeEvent: "changeBackgroundColor",
-      color: current.backgroundColor,
-      left: rect.left + 90,
-      top: rect.top
-    });
-    this.emit("hideBackgroundPropertyPopup");    
-  }
-
-  [INPUT("$backgroundColor .color-code input")](e) {
-    var color = e.$delegateTarget.value;
-    this.refs.$miniView.cssText(`background-color: ${color}`);
-
-    var current = editor.selection.current;
-    if (current) {
-      current.backgroundColor = color;
-      this.emit("refreshCanvas", current);
-    }
-  }
-
-  [EVENT("changeBackgroundColor")](color) {
-    this.refs.$miniView.cssText(`background-color: ${color}`);
-    this.refs.$colorCode.val(color);
-
-    var current = editor.selection.current;
-    if (current) {
-      current.backgroundColor = color;
-      this.emit("refreshCanvas", current);
-    }
   }
 
   [EVENT(CHANGE_EDITOR, CHANGE_LAYER, CHANGE_ARTBOARD, CHANGE_SELECTION)]() {
@@ -92,6 +34,15 @@ export default class BackgroundColorProperty extends BaseProperty {
   }
 
   refresh() {
-    this.load();
+    const current = editor.selection.current;
+    this.children.$color.setValue(current.backgroundColor)
+  }
+
+  [EVENT('changeColor')] (key, color) {
+    var current = editor.selection.current;
+    if (current) {
+      current.backgroundColor = color;
+      this.emit("refreshCanvas", current);
+    }
   }
 }

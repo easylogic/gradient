@@ -1,58 +1,71 @@
 .popup {
-  position: absolute;
+  position: fixed;
   display: none;
-  right: 10px;
-  bottom: 10px;
   box-sizing: border-box;
   z-index: 1000;
   background-color: rgb(255, 255, 255);
   border: 1px solid $border-color;
   border-left: 0px;
   border-right: 0px;
-  box-shadow: 0 0 1px 0px $border-color;
+  box-shadow: 0 0 4px 0px $border-color;
   padding: 1px 0px;
+  border-radius: 4px;
+
+  &.compact {
+    padding: 0px;
+
+    .popup-title {
+      padding: 10px 14px 0px 14px;
+      margin-bottom: 0px;
+    }
+  }
 
   .popup-title {
     font-size: 12px;
-    padding: 10px 5px;
     font-weight: bold;
+
+    margin-bottom: 10px;
+    display: flex;
+    pointer-events: all;
+
+    > * {
+      flex: 1 1 auto;
+    }
+
+    .tools {
+      text-align: right;
+
+      button {
+        border: 0px;
+        background-color: transparent;
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 0.5;
+        padding: 0px;
+      }
+    }
+
+    label {
+      cursor: move; 
+    }
   }
 
   .popup-content {
     .popup-item {
-      display: grid;
-      grid-template-columns: 60px 1fr;
-      height: 24px;
 
       label {
         font-size: 11px;
         vertical-align: middle;
         text-align: right;
         line-height: 1.6;
-        padding-right: 5px;
-        box-sizing: border-box;
+        padding-right: 2px;
+        
       }
 
       label + div {
         vertical-align: middle;
       }
 
-      input[type="range"] {
-        width: 90px;
-        flex: none;
-      }
-
-      input[type="number"] {
-        width: 50px;
-        flex: none;
-        border: 1px solid $border-color;
-      }
-
-      select {
-        width: 40px;
-        flex: none;
-        outline: none;
-      }
     }
   }
 

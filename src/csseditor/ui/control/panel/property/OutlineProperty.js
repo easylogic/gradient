@@ -32,6 +32,9 @@ export default class OutlineProperty extends BaseProperty {
   }
 
   getTemplateForOutlineProperty() {
+
+    var current = editor.selection.current || {outline: {color: "white"}};
+
     return html`
       <div class="property-item outline-item">
         <div class="input-group">
@@ -71,7 +74,7 @@ export default class OutlineProperty extends BaseProperty {
               <label>Color</label>
             </div>
             <div class="input-ui color-container">
-              <div class="color" ref="$color"></div>
+              <ColorViewEditor ref='$color' key='outlineColor' value="${current.outline.color}" onchange="changeColor" />
             </div>
           </div>
         </div>
@@ -87,6 +90,14 @@ export default class OutlineProperty extends BaseProperty {
 
   refresh(){
     this.load();
+
+    var current = editor.selection.current;
+
+    if (current) {
+      console.log(current.outline.color);
+      this.children.$color.setValue(current.outline.color)
+    }
+
   }
 
   [CHANGE("$unit")](e) {
@@ -105,7 +116,7 @@ export default class OutlineProperty extends BaseProperty {
     var value = this.refs.$width.value;
     var unit = this.refs.$unit.value;
     var style = this.refs.$style.value;
-    var color = this.refs.$color.css("background-color");
+    var color = this.children.$color.getValue()
 
     var current = editor.selection.current;
 
@@ -123,17 +134,7 @@ export default class OutlineProperty extends BaseProperty {
     }
   }
 
-
-  [CLICK("$color")](e) {
-    this.emit("showColorPicker", {
-      changeEvent: "changeOutlineColor",
-      color: this.refs.$color.css("background-color")
-    });
-    this.emit("hideBackgroundPropertyPopup")
-  }
-
-  [EVENT("changeOutlineColor")](color) {
-    this.refs.$color.css("background-color", color);
+  [EVENT("changeColor")]() {
     this.refreshOutlineInfo();
   }
 }

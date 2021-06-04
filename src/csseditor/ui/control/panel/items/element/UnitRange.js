@@ -12,7 +12,7 @@ import { Length } from "../../../../../../editor/unit/Length";
 
 const position_list = [
   POSITION_LEFT,
-  POSITION_TOP,
+  POSITION_TOP, 
   POSITION_RIGHT,
   POSITION_BOTTOM,
   POSITION_CENTER

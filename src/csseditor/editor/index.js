@@ -62,6 +62,7 @@ export default class CSSEditor extends UIElement {
                 <div class="layout-screen">
                   <GradientListView />
                 </div>
+                <ColorPickerPopup />
             </div>
   
         `;

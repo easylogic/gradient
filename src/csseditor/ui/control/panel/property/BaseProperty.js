@@ -3,9 +3,18 @@ import UIElement from "../../../../../util/UIElement";
 // import items from "../items/index";
 import Dom from "../../../../../util/Dom";
 import { EMPTY_STRING } from "../../../../../util/css/types";
+import ColorViewEditor from "../items/element/ColorViewEditor";
+import UnitRange from "../items/element/UnitRange";
 
 export default class BaseProperty extends UIElement {
   onToggleShow() {}
+
+  components() {
+    return {
+      ColorViewEditor,
+      UnitRange
+    }
+  }
 
   template() {
     return `

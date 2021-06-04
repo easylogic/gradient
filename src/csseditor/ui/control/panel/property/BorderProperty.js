@@ -87,10 +87,7 @@ export default class BorderProperty extends BaseProperty {
               <label>Color</label>
             </div>
             <div class="input-ui color-ui">
-              <div class="color" ref="$color"></div>
-              <div>
-                  <input type="text" ref="$colorText" />
-              </div>
+              <ColorViewEditor ref='$color' key='borderColor' value="black" onchange="changeColor" />
             </div>
           </div>
         </div>
@@ -126,7 +123,7 @@ export default class BorderProperty extends BaseProperty {
     var type = this.refs.$borderDirection.attr("data-selected-value");
     var unit = this.refs.$unit.value;
     var style = this.refs.$style.value;
-    var color = this.refs.$color.css("background-color");
+    var color = this.children.$color.getValue()
 
     var current = editor.selection.current;
 
@@ -157,17 +154,7 @@ export default class BorderProperty extends BaseProperty {
     this.refresh();
   }
 
-  [CLICK("$color")](e) {
-    this.emit("showColorPicker", {
-      changeEvent: "changeBorderColor",
-      color: this.refs.$color.css("background-color")
-    });
-    this.emit("hideBackgroundPropertyPopup")
-  }
-
-  [EVENT("changeBorderColor")](color) {
-    this.refs.$color.css("background-color", color);
-    this.refs.$colorText.val(color);
+  [EVENT("changeColor")](color) {
     this.refreshBorderInfo();
   }
 }

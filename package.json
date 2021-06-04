@@ -46,6 +46,7 @@
   },
   "homepage": "https://github.com/easylogic/css#readme",
   "dependencies": {
+    "@easylogic/colorpicker": "^1.10.5",
     "html2canvas": "^1.0.0-rc.7"
   }
 }

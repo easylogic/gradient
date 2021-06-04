@@ -118,21 +118,14 @@
       grid-template-columns: repeat(2, 1fr);      
 
       &.color-ui {
-        grid-template-columns: 30px 1fr;
+        grid-template-columns: 1fr;
       }
 
       input {
         width: 100%;
       }
       
-      .color {
-        background-color: white;
-        height: 20px;
-        width: 20px;
-        border-radius: 100%;
-        cursor: pointer;
-        border: 1px solid #ececec;
-      }
+
     }
   }
 }

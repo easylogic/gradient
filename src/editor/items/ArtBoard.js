@@ -33,7 +33,7 @@ export class ArtBoard extends GroupItem {
       filters: [],
       border: {},
       borderRadius: {},
-      outline: { width: Length.px(0), color: "solid", style: 'none' },
+      outline: { width: Length.px(0), color: "white", style: 'solid' },
       borderImage: { width: 0, outset: 0, slice: Length.percent(100), repeat: 'stretch', source: '' },
       backdropFilters: [],
       backgroundImages: [],

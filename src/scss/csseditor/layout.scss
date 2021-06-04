@@ -11,7 +11,7 @@ $left-size: 300px;
 $left-layer-panel: 70px;
 $left-page-size: 70px;
 $toggle-left-size: 80px;
-$right-size: 260px;
+$right-size: 320px;
 $footer-size: 250px;
 $feature-size: 0px;
 $timeline-header-size: 300px;
@@ -168,7 +168,7 @@ $display-grid-color: red;
 @import "./tab-ui.scss";
 
 @import "./element/unit-range.scss";
-
+@import "./color-view-editor.scss";
 @import "./colorpicker-ui.scss";
 @import "./tool-menu.scss";
 @import "./vertical-colorstep.scss";
@@ -194,3 +194,4 @@ $display-grid-color: red;
 
 @import "./fill-picker.scss";
 @import "./popup.scss";
+@import "./color-picker-popup.scss";
